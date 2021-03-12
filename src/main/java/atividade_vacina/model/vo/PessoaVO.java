@@ -1,22 +1,24 @@
 package atividade_vacina.model.vo;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
-public class PessoaVO {
+public abstract class PessoaVO {
 	
+	private int id;
 	private String nome;
 	private Date dtNascimento;
 	private char sexo;
 	private String cpf;
-	private String notaAplicacao;
+	private ArrayList<AplicacaoVacinaVO> aplicacao;
 	
-	public PessoaVO(String nome, Date dtNascimento, char sexo, String cpf, String notaAplicacao) {
+	public PessoaVO(String nome, Date dtNascimento, char sexo, String cpf, String notaAplicacao, ArrayList<AplicacaoVacinaVO> aplicacao) {
 		super();
 		this.nome = nome;
 		this.dtNascimento = dtNascimento;
 		this.sexo = sexo;
 		this.cpf = cpf;
-		this.notaAplicacao = notaAplicacao;
+		this.aplicacao = aplicacao;
 	}
 	public PessoaVO() {
 		super();
@@ -34,8 +36,8 @@ public class PessoaVO {
 	public String getCpf() {
 		return cpf;
 	}
-	public String getNotaAplicacao() {
-		return notaAplicacao;
+	public ArrayList<AplicacaoVacinaVO> getAplicacao() {
+		return aplicacao;
 	}
 	
 	public void setNome(String nome) {
@@ -50,13 +52,13 @@ public class PessoaVO {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	public void setNotaAplicacao(String notaAplicacao) {
-		this.notaAplicacao = notaAplicacao;
+	public void setNotaAplicacao(ArrayList<AplicacaoVacinaVO> aplicacao) {
+		this.aplicacao = aplicacao;
 	}
 	@Override
 	public String toString() {
 		return "PessoaVO [nome=" + nome + ", dtNascimento=" + dtNascimento + ", sexo=" + sexo + ", cpf=" + cpf
-				+ ", notaAplicacao=" + notaAplicacao + "]";
+				+ ", notaAplicacao=" + aplicacao + "]";
 	}
 	
 	
