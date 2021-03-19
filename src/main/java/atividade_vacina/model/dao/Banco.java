@@ -65,11 +65,11 @@ import java.sql.Statement;
 public class Banco {
 
 	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-	private static final String BANCODADOS = "exemplos";
+	private static final String BANCODADOS = "atividadeVacinas";
 	private static final String CONEXAO = "jdbc:mysql://localhost:3306/" + BANCODADOS
 			+ "?useTimezone=true&serverTimezone=UTC&useSSL=false";
 	private static final String USER = "root";
-	private static final String PASSWORD = "admin";
+	private static final String PASSWORD = "";
 
 	public static final int CODIGO_RETORNO_ERRO_EXCLUSAO = 0;
 	public static final int CODIGO_RETORNO_SUCESSO_EXCLUSAO = 1;
@@ -130,8 +130,8 @@ public class Banco {
 	 */
 	public static Statement getStatement(Connection conn) {
 		try {
-			Statement stmt = conn.createStatement();
-			return stmt;
+			Statement st = conn.createStatement();
+			return st;
 		} catch (SQLException e) {
 			System.out.println("Erro ao obter o Statement. Causa: " + e.getMessage());
 			return null;
@@ -150,10 +150,10 @@ public class Banco {
 	 * @throws SQLException
 	 * 
 	 */
-	public static void closeStatement(Statement stmt) {
+	public static void closeStatement(Statement st) {
 		try {
-			if (stmt != null) {
-				stmt.close();
+			if (st != null) {
+				st.close();
 			}
 		} catch (SQLException e) {
 			System.out.println("Problema no fechamento do Statement. Causa: " + e.getMessage());
@@ -171,15 +171,7 @@ public class Banco {
 	 * @throws SQLException
 	 * 
 	 */
-	public static PreparedStatement getPreparedStatement(Connection conn) {
-		try {
-			PreparedStatement stmt = null;
-			return stmt;
-		} catch (Exception e) {
-			System.out.println("Erro ao obter o PreparedStatement. Causa: " + e.getMessage());
-			return null;
-		}
-	}
+	
 
 	/**
 	 * 
@@ -192,20 +184,20 @@ public class Banco {
 	 * @throws SQLException
 	 * 
 	 */
-	public static PreparedStatement getPreparedStatement(Connection conn, String sql) {
+	public static PreparedStatement getPreparedStatementWithPk(Connection conn, String sql) {
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			return stmt;
+			PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			return ps;
 		} catch (Exception e) {
 			System.out.println("Erro ao obter o PreparedStatement. Causa: " + e.getCause());
 			return null;
 		}
 	}
 
-	public static PreparedStatement getPreparedStatement(Connection conn, String sql, int tipoRetorno) {
+	public static PreparedStatement getPreparedStatement(Connection conn, String sql) {
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql, tipoRetorno);
-			return stmt;
+			PreparedStatement ps = conn.prepareStatement(sql);
+			return ps;
 		} catch (Exception e) {
 			System.out.println("Erro ao obter o PreparedStatement.");
 			return null;
@@ -246,10 +238,22 @@ public class Banco {
 	 * @throws SQLException
 	 * 
 	 */
-	public static void closeResultSet(ResultSet result) {
+	
+	public static ResultSet getResultSet(PreparedStatement ps) {
 		try {
-			if (result != null) {
-				result.close();
+			Connection conn = getConnection();
+			ResultSet rs = ps.getGeneratedKeys();
+			return rs;
+		} catch (SQLException e) {
+			System.out.println("Erro ao obter o ResultSet.");
+			return null;
+		}
+	}
+	
+	public static void closeResultSet(ResultSet rs) {
+		try {
+			if (rs != null) {
+				rs.close();
 			}
 		} catch (SQLException e) {
 			System.out.println("Problema no fechamento do ResultSet. Causa: " + e.getMessage());
