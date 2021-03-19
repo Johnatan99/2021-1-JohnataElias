@@ -2,22 +2,31 @@ package telefonia.model.vo;
 
 public class EnderecoVO {
 	
+	private Integer id;
 	private String logradouro;
 	private String cep;
 	private String uf;
 	private String cidade;
+	private String numero;
 	
 	public EnderecoVO() {
 		super();
 	}
-	public EnderecoVO(String logradouro, String cep, String uf, String cidade) {
+	public EnderecoVO(String logradouro, String cep, String uf, String cidade, String numero) {
 		super();
 		this.logradouro = logradouro;
 		this.cep = cep;
 		this.uf = uf;
 		this.cidade = cidade;
+		this.numero = numero;
 	}
 	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public String getLogradouro() {
 		return logradouro;
 	}
@@ -43,6 +52,12 @@ public class EnderecoVO {
 		this.cidade = cidade;
 	}
 	
+	public String getNumero() {
+		return numero;
+	}
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
 	@Override
 	public String toString() {
 		return "\nLogradouro: "+this.getLogradouro()
