@@ -2,6 +2,7 @@ package telefonia.model.vo;
 
 public class TelefoneVO {
 	
+	private Integer id;
 	private String ddd;
 	private String numero;
 	private String codigoInternacional;
@@ -23,6 +24,14 @@ public class TelefoneVO {
 		super();
 	}
 	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public String getDdd() {
 		return ddd;
 	}

@@ -1,6 +1,6 @@
 package atividade_vacina.model.vo;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class VacinaVO {
 	
@@ -13,7 +13,7 @@ public class VacinaVO {
 	private int quantidadeDoses;
 	private PesquisadorVO pesquisador;
 	
-	public VacinaVO(String nomeVacina, String paisOrigem, String estagioPesquisa, Date dtInicioPesquisa, Date dtTerminoPesquisa, PesquisadorVO pesquisador, int quantidadeDoses) {
+	public VacinaVO(String nomeVacina, String paisOrigem, String estagioPesquisa, Date dtInicioPesquisa, Date dtTerminoPesquisa, int quantidadeDoses, PesquisadorVO pesquisador) {
 		super();
 		this.nomeVacina = nomeVacina;
 		this.paisOrigem = paisOrigem;
