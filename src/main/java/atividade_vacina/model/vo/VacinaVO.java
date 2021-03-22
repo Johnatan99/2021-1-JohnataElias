@@ -1,6 +1,6 @@
 package atividade_vacina.model.vo;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class VacinaVO {
 	
@@ -8,12 +8,12 @@ public class VacinaVO {
 	private String nome;
 	private String paisOrigem;
 	private String estagioPesquisa;
-	private Date dtInicioPesquisa;
-	private Date dtTerminoPesquisa;
+	private LocalDate dtInicioPesquisa;
+	private LocalDate dtTerminoPesquisa;
 	private int quantidadeDoses;
 	private PesquisadorVO responsavel;
 	
-	public VacinaVO(String nome, String paisOrigem, String estagioPesquisa, Date dtInicioPesquisa, Date dtTerminoPesquisa, int quantidadeDoses, PesquisadorVO responsavel) {
+	public VacinaVO(String nome, String paisOrigem, String estagioPesquisa, LocalDate dtInicioPesquisa, LocalDate dtTerminoPesquisa, int quantidadeDoses, PesquisadorVO responsavel) {
 		super();
 		this.nome = nome;
 		this.paisOrigem = paisOrigem;
@@ -54,17 +54,17 @@ public class VacinaVO {
 		this.estagioPesquisa = estagioPesquisa;
 	}
 	
-	public Date getDtInicioPesquisa() {
+	public LocalDate getDtInicioPesquisa() {
 		return dtInicioPesquisa;
 	}
-	public void setDtInicioPesquisa(Date dtInicioPesquisa) {
+	public void setDtInicioPesquisa(LocalDate dtInicioPesquisa) {
 		this.dtInicioPesquisa = dtInicioPesquisa;
 	}
 	
-	public Date getDtTerminoPesquisa() {
+	public LocalDate getDtTerminoPesquisa() {
 		return dtTerminoPesquisa;
 	}
-	public void setDtTerminoPesquisa(Date dtTerminoPesquisa) {
+	public void setDtTerminoPesquisa(LocalDate dtTerminoPesquisa) {
 		this.dtTerminoPesquisa = dtTerminoPesquisa;
 	}
 	public void setQuantidadeDoses(int quantidadeDoses) {
