@@ -6,13 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
-import atividade_vacina.model.vo.PessoaVO;
-import atividade_vacina.model.vo.AplicacaoVO;
+import atividade_vacina.model.vo.Pessoa;
+import atividade_vacina.model.vo.Aplicacao;
 import atividade_vacina.model.dao.PessoaDAO;
 
 public class PessoaDAO {
 	
-	public PessoaVO cadastrar(PessoaVO novaPessoa) {
+	public Pessoa cadastrar(Pessoa novaPessoa) {
 		Connection conn = Banco.getConnection();
 		String sql="insert into pessoa(nome, sobrenome, dtNascimento, sexo, cpf, fkidAplicacao) values(?, ?, ?, ?, ?, 6)";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
@@ -30,7 +30,7 @@ public class PessoaDAO {
 				novaPessoa.setId(rs.getInt(1));
 			}
 		} catch(SQLException e) {
-			System.out.println("Erro ao cadastrar pessoa.\nErro: "+e.getMessage());
+			System.out.println("Erro ao cadastrar Pessoa.\nErro: "+e.getMessage());
 		} finally{
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
@@ -38,7 +38,7 @@ public class PessoaDAO {
 		}
 		return novaPessoa;
 	}
-	public boolean alterar(PessoaVO pessoaAlterada, Integer id) {
+	public boolean alterar(Pessoa pessoaAlterada, Integer id) {
 		Connection conn = Banco.getConnection();
 		String sql="update pessoa set nome=?, sobrenome=?, dtNascimento=?, sexo=?, cpf=?, fkidAplicacao"
 				+ "where idPessoa=?";
@@ -56,7 +56,7 @@ public class PessoaDAO {
 			int numLinhasAlteradas = ps.executeUpdate();
 			resposta = numLinhasAlteradas>0;
 		} catch(SQLException e) {
-			System.out.println("Erro ao alterar pessoa.\nErro: "+e.getMessage());
+			System.out.println("Erro ao alterar registros de Pessoa.\nErro: "+e.getMessage());
 		} finally {
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
@@ -73,7 +73,7 @@ public class PessoaDAO {
 			int numLinhasAlteradas = ps.executeUpdate();
 			resposta=numLinhasAlteradas>0;
 		} catch(SQLException e) {
-			System.out.println("Erro ao excluir pessoa.\nErro: "+e.getMessage());
+			System.out.println("Erro ao excluir registros de Pessoa.\nErro: "+e.getMessage());
 		}finally {
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
@@ -81,8 +81,8 @@ public class PessoaDAO {
 		return resposta;
 	}
 	
-	public PessoaVO construirPessoDoResultSet(ResultSet rs) {
-		PessoaVO pessoaEncontrada = new PessoaVO();
+	public Pessoa construirPessoDoResultSet(ResultSet rs) {
+		Pessoa pessoaEncontrada = new Pessoa();
 		try {
 			pessoaEncontrada.setId(rs.getInt("idPessoa"));
 			pessoaEncontrada.setNome(rs.getString("nome"));
@@ -92,16 +92,16 @@ public class PessoaDAO {
 			pessoaEncontrada.setCpf(rs.getString("cpf"));
 			
 			AplicacaoDAO aplicacaoDAO = new AplicacaoDAO();
-			AplicacaoVO aplicacaoVO = aplicacaoDAO.buscarPorId(rs.getInt("idAplicacao"));
+			Aplicacao aplicacaoVO = aplicacaoDAO.buscarPorId(rs.getInt("idAplicacao"));
 			pessoaEncontrada.setAplicacao(aplicacaoVO);
 		} catch(SQLException e) {
-			System.out.println("Erro ao buscar pessoa.\nErro: "+e.getMessage());
+			System.out.println("Erro ao buscar Registro de Pessoa solicitada do ResultSet.\nErro: "+e.getMessage());
 		}
 		return pessoaEncontrada;
 	}
 	
-	public PessoaVO buscarPorId(int id) {
-		PessoaVO pessoaEncontrada = new PessoaVO();
+	public Pessoa buscarPorId(int id) {
+		Pessoa pessoaEncontrada = new Pessoa();
 		Connection conn = Banco.getConnection();
 		String sql="select * from pessoa where idPessoa=?";
 		PreparedStatement ps = Banco.getPreparedStatement(conn, sql);
@@ -112,15 +112,15 @@ public class PessoaDAO {
 				pessoaEncontrada = construirPessoDoResultSet(rs);
 			}
 		} catch(SQLException e) {
-			System.out.println("Erro ao encontrar pessoa.\nErro: "+e.getMessage());
+			System.out.println("Erro ao encontrar registros de Pessoa solicitada.\nErro: "+e.getMessage());
 		} finally {
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
 		}
 		return pessoaEncontrada;
 	}
-	public ArrayList<PessoaVO> buscarTodos(){
-		ArrayList<PessoaVO> pessoasEncontradas = new ArrayList<PessoaVO>();
+	public ArrayList<Pessoa> buscarTodos(){
+		ArrayList<Pessoa> pessoasEncontradas = new ArrayList<Pessoa>();
 		Connection conn = Banco.getConnection();
 		String sql="select * from pessoa";
 		PreparedStatement ps = Banco.getPreparedStatement(conn, sql);
@@ -131,10 +131,11 @@ public class PessoaDAO {
 				pessoasEncontradas.add(construirPessoDoResultSet(rs));
 			}
 		} catch(SQLException e) {
-			System.out.println("Erro ao buscar todos.\nErro: "+e.getMessage());
+			System.out.println("Erro ao buscar todos registros de Pessoas.\nErro: "+e.getMessage());
 		} finally {
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
+			Banco.closeResultSet(rs);
 		}
 		return pessoasEncontradas;
 	} 

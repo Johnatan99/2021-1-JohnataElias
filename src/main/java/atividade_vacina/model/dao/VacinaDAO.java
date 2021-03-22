@@ -9,12 +9,11 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import atividade_vacina.model.vo.VacinaVO;
-import atividade_vacina.model.vo.PesquisadorVO;
+import atividade_vacina.model.vo.Vacina;
+import atividade_vacina.model.vo.Pesquisador;
 
-public class VacinaDAO {
-	
-	public VacinaVO cadastrar(VacinaVO novaVacina) {
+public class VacinaDAO {	
+	public Vacina cadastrar(Vacina novaVacina) {
 		Connection conn = Banco.getConnection();
 		String sql = "insert into vacina(nome, paisOrigem, estagioPesquisa, dtInicioPesquisa, dtTerminoPesquisa, quantidadeDoses) values(?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);	
@@ -40,9 +39,8 @@ public class VacinaDAO {
 		}
 		return novaVacina;
 	}
-	
 	public boolean excluir(Integer id) {
-		String sql = "delete from vacina where id = ?";
+		String sql = "delete from vacina where idVacina = ?";
 		boolean resposta = true;
 		Connection conn = Banco.getConnection();
 		PreparedStatement ps = Banco.getPreparedStatement(conn, sql);
@@ -51,7 +49,7 @@ public class VacinaDAO {
 			ps.setInt(1, id);
 			numLinhasAfetadas = ps.executeUpdate(sql);
 		} catch(SQLException e) {
-			System.out.println("Erro ao excluir vacina "+e.getMessage());
+			System.out.println("Erro ao excluir registro da Vacina.\nErro: "+e.getMessage());
 		} finally {
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
@@ -59,16 +57,15 @@ public class VacinaDAO {
 		boolean excluiu = numLinhasAfetadas > 0;
 		return excluiu;
 	}
-	
 	public boolean alterar(int id) {
 		String sql = "update vacina set nome=? , paisOrigem=?, estagioPesquisa=?, dtInicioPesquisa=?, dtTerminoPesquisa=?, quantidadeDoses=?"
-				+ "where id=?";
+				+ "where idVacina=?";
 		Connection conn = Banco.getConnection();
 		PreparedStatement ps = Banco.getPreparedStatement(conn, sql);
 		ResultSet rs = null;
 		boolean alterado = false;
 		int linhasAfetadas = 0;
-		VacinaVO vacinaAlterada = new VacinaVO();
+		Vacina vacinaAlterada = new Vacina();
 		try {
 			ps.setString(1, vacinaAlterada.getNomeVacina());
 			ps.setString(2, vacinaAlterada.getPaisOrigem());
@@ -78,7 +75,7 @@ public class VacinaDAO {
 			ps.setInt(6, vacinaAlterada.getQuantidadeDoses());
 			linhasAfetadas = ps.executeUpdate();
 		} catch(SQLException e) {
-			System.out.println("Erro ao alterar vacina.\nErro: "+e.getMessage());
+			System.out.println("Erro ao alterar registro de Vacina.\nErro: "+e.getMessage());
 		} finally {
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
@@ -87,9 +84,8 @@ public class VacinaDAO {
 		boolean alterou = linhasAfetadas > 0;
 		return alterou;
 	}
-	
-	private VacinaVO construirVacinaDoRs(ResultSet rs) {
-		VacinaVO vacinaEncontrada = new VacinaVO();
+	private Vacina construirVacinaDoRs(ResultSet rs) {
+		Vacina vacinaEncontrada = new Vacina();
 		try {
 		vacinaEncontrada.setId(rs.getInt("idVacina"));
 		vacinaEncontrada.setNomeVacina(rs.getString("nome"));
@@ -99,15 +95,15 @@ public class VacinaDAO {
 		vacinaEncontrada.setDtTerminoPesquisa(rs.getDate("dtTerminoPesquisa").toLocalDate());
 		vacinaEncontrada.setQuantidadeDoses(rs.getInt("quantidadeDoses"));
 		} catch(SQLException e) {
-			System.out.println("Erro ao construir vacina do ResultSet.\nErro: "+e.getMessage());
+			System.out.println("Erro ao construir registro vacina do ResultSet.\nErro: "+e.getMessage());
 		}
 		return vacinaEncontrada;
 	}
-	public VacinaVO buscarVacinaPorNome(String nomeVacina) {
-		String sql = "select * from vacina where nome = ?";
+	public Vacina buscarVacinaPorNome(String nomeVacina) {
+		String sql = "select * from vacina where nome=?";
 		Connection conn = Banco.getConnection();
 		PreparedStatement ps = Banco.getPreparedStatement(conn, sql);
-		VacinaVO vacinaEncontrada = new VacinaVO();
+		Vacina vacinaEncontrada = new Vacina();
 		ResultSet rs = null;
 		try {
 			ps.setString(1, nomeVacina);
@@ -116,15 +112,15 @@ public class VacinaDAO {
 				vacinaEncontrada = construirVacinaDoRs(rs);
 			}
 		} catch(SQLException e) {
-			System.out.println("Erro ao buscar por vacina. \nErro: "+e.getMessage());
+			System.out.println("Erro ao buscar registro de Vacina. \nErro: "+e.getMessage());
 		}
 		return vacinaEncontrada;
 	}
-	public VacinaVO buscarPorId(int id) {
+	public Vacina buscarPorId(int id) {
 		String sql = "select * from vacina where idVacina=?";
 		Connection conn = Banco.getConnection();
 		PreparedStatement ps = Banco.getPreparedStatement(conn, sql);
-		VacinaVO vacinaEncontrada = new VacinaVO();
+		Vacina vacinaEncontrada = new Vacina();
 		ResultSet rs = null;
 		try {
 			ps.setInt(1, id);
@@ -133,16 +129,16 @@ public class VacinaDAO {
 				vacinaEncontrada = construirVacinaDoRs(rs);
 			}
 		} catch(SQLException e) {
-			System.out.println("Erro ao buscar registros da vacina solicitada. \nErro: "+e.getMessage());
+			System.out.println("Erro ao buscar registros da Vacina solicitada.\nErro: "+e.getMessage());
 		}
 		return vacinaEncontrada;
 	}
 	
-	public ArrayList<VacinaVO> buscarTodasVacinas() {
+	public ArrayList<Vacina> buscarTodasVacinas() {
 		String sql = "select * from vacina";
 		Connection conn = Banco.getConnection();
 		PreparedStatement ps = Banco.getPreparedStatement(conn, sql);
-		ArrayList<VacinaVO> vacinaEncontradas = new ArrayList<VacinaVO>();
+		ArrayList<Vacina> vacinaEncontradas = new ArrayList<Vacina>();
 		ResultSet rs = null;
 		try {
 			rs = ps.executeQuery();
@@ -150,7 +146,7 @@ public class VacinaDAO {
 				vacinaEncontradas.add(construirVacinaDoRs(rs));
 			}
 		} catch(SQLException e) {
-			System.out.println("Erro ao buscar registros de vacinas. \nErro: "+e.getMessage());
+			System.out.println("Erro ao buscar registros de Vacinas. \nErro: "+e.getMessage());
 		}
 		return vacinaEncontradas;
 	}

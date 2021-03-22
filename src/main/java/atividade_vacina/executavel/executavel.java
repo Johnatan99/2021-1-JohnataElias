@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
 
 import atividade_vacina.model.dao.VacinaDAO;
-import atividade_vacina.model.vo.VacinaVO; 
-import atividade_vacina.model.vo.PessoaVO;
+import atividade_vacina.model.vo.Vacina; 
+import atividade_vacina.model.vo.Pessoa;
 import atividade_vacina.model.vo.Aplicacao;
-import atividade_vacina.model.vo.PesquisadorVO;
+import atividade_vacina.model.vo.Pesquisador;
 
 //import atividade_vacina.model.dao.PesquisadorDAO;
 import atividade_vacina.model.dao.VacinaDAO;
@@ -22,10 +22,10 @@ public class executavel {
 		ArrayList<Aplicacao> aplicacaoP1 = new ArrayList<Aplicacao>();
 		ArrayList<Aplicacao> aplicacaoP2 = new ArrayList<Aplicacao>();
 	
-		PessoaVO pessoa1 = new PessoaVO("Mano", "do Corre da Silva" , LocalDate.of(1980, 8, 06) , 'M', "111.111.111-11", null);
-		PessoaVO pessoa2 = new PessoaVO("Mano", "do Corre da Silva" , LocalDate.of(1980, 8, 06) , 'M', "111.111.111-11", null);
+		Pessoa pessoa1 = new Pessoa("Mano", "do Corre da Silva" , LocalDate.of(1980, 8, 06) , 'M', "111.111.111-11", null);
+		Pessoa pessoa2 = new Pessoa("Mano", "do Corre da Silva" , LocalDate.of(1980, 8, 06) , 'M', "111.111.111-11", null);
 		
-		PesquisadorVO pesquisador1 = new PesquisadorVO("Mano", "do Corre da Silva" , LocalDate.of(1980, 8, 06) , 'M', "111.111.111-11", null);
+		Pesquisador pesquisador1 = new Pesquisador("Mano", "do Corre da Silva" , LocalDate.of(1980, 8, 06) , 'M', "111.111.111-11", null);
 
 		//VacinaVO novaVacina = new VacinaVO("CoronaVac", "China", "aplicação em massa", null, null, 200, null);
 		

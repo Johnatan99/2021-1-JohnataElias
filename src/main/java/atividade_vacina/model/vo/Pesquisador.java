@@ -3,17 +3,17 @@ package atividade_vacina.model.vo;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class PesquisadorVO extends PessoaVO{
+public class Pesquisador extends Pessoa{
 	
 	private int id;
 	private String instituicao;
-	private VacinaVO vacinaCriada;
+	private Vacina vacinaCriada;
 	
-	public PesquisadorVO() {
+	public Pesquisador() {
 		super();
 	}
-	public PesquisadorVO(String nome, String sobrenome, LocalDate dtNascimento, char sexo, String cpf,  String tipoPessoa,
-			AplicacaoVO aplicacao, String instituicao, VacinaVO vacinaCriada) {
+	public Pesquisador(String nome, String sobrenome, LocalDate dtNascimento, char sexo, String cpf,  String tipoPessoa,
+			Aplicacao aplicacao, String instituicao, Vacina vacinaCriada) {
 		super(nome, sobrenome, dtNascimento, sexo, cpf, tipoPessoa, aplicacao);
 		this.instituicao=instituicao;
 		this.vacinaCriada=vacinaCriada;
@@ -32,11 +32,11 @@ public class PesquisadorVO extends PessoaVO{
 	public String getInstituicao() {
 		return instituicao;
 	}
-	public VacinaVO getVacinaCriada() {
+	public Vacina getVacinaCriada() {
 		return vacinaCriada;
 	}
 
-	public void setVacinaCriada(VacinaVO vacinaCriada) {
+	public void setVacinaCriada(Vacina vacinaCriada) {
 		this.vacinaCriada = vacinaCriada;
 	}
 	@Override

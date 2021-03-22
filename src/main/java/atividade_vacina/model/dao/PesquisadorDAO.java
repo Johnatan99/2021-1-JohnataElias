@@ -6,27 +6,29 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import atividade_vacina.model.vo.PessoaVO;
-import atividade_vacina.model.vo.PesquisadorVO;
-import atividade_vacina.model.vo.VacinaVO;
+import atividade_vacina.model.vo.Pessoa;
+import atividade_vacina.model.vo.Pesquisador;
+import atividade_vacina.model.vo.Vacina;
 
 public class PesquisadorDAO {
 	
-	private PessoaVO pessoa = new PessoaVO();
-	public PesquisadorVO cadastrar(PesquisadorVO novoPesquisador) {
+	private Pessoa pessoa = new Pessoa();
+	public Pesquisador cadastrar(Pesquisador novoPesquisador) {
 		Connection conn = Banco.getConnection();
-		String sql="insert into pesquisador(fkIdPessoa) values(?)";
+		String sql="insert into pesquisador(instituicao, fkIdVacinaCriada, fkIdPessoa) values(?, ?, ?)";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
 		ResultSet rs = null;
 		try {
-			ps.setInt(1, pessoa.getId());
+			ps.setString(1, novoPesquisador.getInstituicao());
+			ps.setInt(2, novoPesquisador.getVacinaCriada().getId());
+			ps.setInt(3, pessoa.getId());
 			ps.execute();
 			rs = ps.getGeneratedKeys();
 			if(rs.next()) {
 				novoPesquisador.setId(rs.getInt(1));
 			}
 		} catch(SQLException e) {
-			System.out.println("Erro ao cadastrar novo pesquisador.\nErro: "+e.getMessage());
+			System.out.println("Erro ao cadastrar Pesquisador.\nErro: "+e.getMessage());
 		} finally{
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
@@ -34,18 +36,22 @@ public class PesquisadorDAO {
 		}
 		return novoPesquisador;
 	}
-	public boolean alterar(PesquisadorVO pesquisadorAlterado, Integer id) {
+	public boolean alterar(Pesquisador pesquisadorAlterado) {
 		Connection conn = Banco.getConnection();
-		String sql="update pesquisador set fkIdPessoa=? where idPesquisador=?";
+		String sql="update pesquisador set instituicao=?, fkIdVacinaCriada=?, fkIdPessoa=?"
+				+ "where idPesquisador=?";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
 		boolean resposta = false;
 		try {
-			ps.setInt(1, pessoa.getId());
-			ps.setInt(6, id);
+			ps.setString(1, pesquisadorAlterado.getInstituicao());
+			ps.setInt(2, pesquisadorAlterado.getVacinaCriada().getId());
+			ps.setInt(3, pessoa.getId());
+			ps.setInt(4, pesquisadorAlterado.getId());
+			ps.executeUpdate();
 			int numLinhasAlteradas = ps.executeUpdate();
 			resposta = numLinhasAlteradas>0;
 		} catch(SQLException e) {
-			System.out.println("Erro ao alterar pesquisador.\nErro: "+e.getMessage());
+			System.out.println("Erro ao alterar registro de Pesquisador.\nErro: "+e.getMessage());
 		} finally {
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
@@ -62,7 +68,7 @@ public class PesquisadorDAO {
 			int numLinhasAlteradas = ps.executeUpdate();
 			resposta=numLinhasAlteradas>0;
 		} catch(SQLException e) {
-			System.out.println("Erro ao excluir pesquisador.\nErro: "+e.getMessage());
+			System.out.println("Erro ao excluir registro de Pesquisador.\nErro: "+e.getMessage());
 		}finally {
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
@@ -70,21 +76,26 @@ public class PesquisadorDAO {
 		return resposta;
 	}
 	
-	public PesquisadorVO construirDoResultSet(ResultSet rs) {
-		PesquisadorVO pesquisadorEncontrado = new PesquisadorVO();
+	public Pesquisador construirDoResultSet(ResultSet rs) {
+		Pesquisador pesquisadorEncontrado = new Pesquisador();
 		try {
 			pesquisadorEncontrado.setId(rs.getInt("idPesquisador"));
-			pessoa.setId(rs.getInt("fkIdPessoa"));
+			pesquisadorEncontrado.setInstituicao(rs.getString("instituicao"));
+			
+			VacinaDAO vDAO = new VacinaDAO();
+			Vacina vacina = vDAO.buscarPorId(rs.getInt("idVacina"));
+			pesquisadorEncontrado.setVacinaCriada(vacina);
+					
 		} catch(SQLException e) {
-			System.out.println("Erro ao buscar pessoa.\nErro: "+e.getMessage());
+			System.out.println("Erro ao construir registro de Pesquisador solicitado do ResultSet.\nErro: "+e.getMessage());
 		}
 		return pesquisadorEncontrado;
 	}
 	
-	public PesquisadorVO buscarPorId(int id) {
-		PesquisadorVO pesquisadorEncontrado = new PesquisadorVO();
+	public Pesquisador buscarPorId(int id) {
+		Pesquisador pesquisadorEncontrado = new Pesquisador();
 		Connection conn = Banco.getConnection();
-		String sql="select * from pessoa where idPessoa=?";
+		String sql="select * from pessoa where idPesquisador=?";
 		PreparedStatement ps = Banco.getPreparedStatement(conn, sql);
 		ResultSet rs = null;
 		try {
@@ -94,15 +105,15 @@ public class PesquisadorDAO {
 				pesquisadorEncontrado = construirDoResultSet(rs);
 			}
 		} catch(SQLException e) {
-			System.out.println("Erro ao encontrar pessoa.\nErro: "+e.getMessage());
+			System.out.println("Erro ao encontrar registro do Pesquiador solicitado.\nErro: "+e.getMessage());
 		} finally {
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
 		}
 		return pesquisadorEncontrado;
 	}
-	public ArrayList<PesquisadorVO> buscarTodos(){
-		ArrayList<PesquisadorVO> pesquisadoresEncontrados = new ArrayList<PesquisadorVO>();
+	public ArrayList<Pesquisador> buscarTodos(){
+		ArrayList<Pesquisador> pesquisadoresEncontrados = new ArrayList<Pesquisador>();
 		Connection conn = Banco.getConnection();
 		String sql="select * from pessoa";
 		PreparedStatement ps = Banco.getPreparedStatement(conn, sql);
@@ -113,7 +124,7 @@ public class PesquisadorDAO {
 				pesquisadoresEncontrados.add(construirDoResultSet(rs));
 			}
 		} catch(SQLException e) {
-			System.out.println("Erro ao buscar todos.\nErro: "+e.getMessage());
+			System.out.println("Erro ao buscar todos registros de Pesquisadores.\nErro: "+e.getMessage());
 		} finally {
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);

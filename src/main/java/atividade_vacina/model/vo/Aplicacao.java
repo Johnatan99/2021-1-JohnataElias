@@ -2,17 +2,17 @@ package atividade_vacina.model.vo;
 
 import java.time.LocalDate;
 
-public class AplicacaoVO {
+public class Aplicacao {
 	
 	private int id;
-	private VacinaVO vacina;
+	private Vacina vacina;
 	private LocalDate dtAplicacao;
 	private String nota;
 	
-	public AplicacaoVO() {
+	public Aplicacao() {
 		super();
 	}
-	public AplicacaoVO(VacinaVO vacina, LocalDate dtAplicacao) {
+	public Aplicacao(Vacina vacina, LocalDate dtAplicacao) {
 		super();
 	}
 	public int getId() {
@@ -21,10 +21,10 @@ public class AplicacaoVO {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public VacinaVO getVacina() {
+	public Vacina getVacina() {
 		return vacina;
 	}
-	public void setVacina(VacinaVO vacina) {
+	public void setVacina(Vacina vacina) {
 		this.vacina = vacina;
 	}
 	public LocalDate getDtAplicacao() {

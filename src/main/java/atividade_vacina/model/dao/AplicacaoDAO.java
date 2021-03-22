@@ -5,14 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import atividade_vacina.model.vo.VacinaVO;
-import atividade_vacina.model.vo.AplicacaoVO;
+import atividade_vacina.model.vo.Vacina;
+import atividade_vacina.model.vo.Aplicacao;
 
 import java.util.ArrayList;
 
 public class AplicacaoDAO {
 	
-	public AplicacaoVO cadastrarAplicacao(AplicacaoVO novaAplicacao) {
+	public Aplicacao cadastrarAplicacao(Aplicacao novaAplicacao) {
 		Connection conn = Banco.getConnection();
 		String sql="insert into aplicacao(fkIdVacina, dtAplicacao, nota) values(?, ?, ?)";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
@@ -27,7 +27,7 @@ public class AplicacaoDAO {
 				novaAplicacao.setId(rs.getInt(1));
 			}
 		} catch(SQLException e) {
-			System.out.println("Erro ao registrar aplicação.\nErro: "+e.getMessage());
+			System.out.println("Erro ao cadastrar Aplicação.\nErro: "+e.getMessage());
 		} finally {
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
@@ -35,9 +35,9 @@ public class AplicacaoDAO {
 		}
 		return novaAplicacao;
 	}
-	public boolean alterar(AplicacaoVO aplicacaoAlterada) {
+	public boolean alterar(Aplicacao aplicacaoAlterada) {
 		Connection conn = Banco.getConnection();
-		String sql="update from aplicacao set fkIdAplicacao=?, dtAplicacao=?, nota=?";
+		String sql="update aplicacao set fkIdAplicacao=?, dtAplicacao=?, nota=?";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
 		ResultSet rs = null;
 		boolean resposta = false;
@@ -47,7 +47,7 @@ public class AplicacaoDAO {
 			ps.setString(3, aplicacaoAlterada.getNota());
 			ps.executeUpdate();
 		} catch(SQLException e){
-			System.out.println("Erro ao alterar registro de aplicação");
+			System.out.println("Erro ao alterar registro de Aplicação");
 		} finally {
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
@@ -73,8 +73,8 @@ public class AplicacaoDAO {
 		}
 		return resposta;
 	}
-	public AplicacaoVO buscarPorId(int id) {
-		AplicacaoVO aplicacaoEncontrada = new AplicacaoVO();
+	public Aplicacao buscarPorId(int id) {
+		Aplicacao aplicacaoEncontrada = new Aplicacao();
 		Connection conn = Banco.getConnection();
 		String sql="select * from aplicacao where idAplicacao=?";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
@@ -85,7 +85,7 @@ public class AplicacaoDAO {
 				aplicacaoEncontrada = construirDoResultSet(rs);
 			}
 		} catch(SQLException e) {
-			System.out.println("Erro ao buscar registro da aplicação.\nErro: "+e.getMessage());
+			System.out.println("Erro ao buscar registro da Aplicação.\nErro: "+e.getMessage());
 		} finally {
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
@@ -93,21 +93,21 @@ public class AplicacaoDAO {
 		return aplicacaoEncontrada;
 	}
 	
-	public AplicacaoVO construirDoResultSet(ResultSet rs) {
-		AplicacaoVO aplicacaoEncontrada = new AplicacaoVO();
+	public Aplicacao construirDoResultSet(ResultSet rs) {
+		Aplicacao aplicacaoEncontrada = new Aplicacao();
 		try {
 			VacinaDAO vacinaDAO = new VacinaDAO();
-			VacinaVO vacinaVO = vacinaDAO.buscarPorId(rs.getInt("idVacina"));
+			Vacina vacinaVO = vacinaDAO.buscarPorId(rs.getInt("idVacina"));
 			aplicacaoEncontrada.setVacina(vacinaVO);
 			aplicacaoEncontrada.setDtAplicacao(rs.getDate("dtAplicacao").toLocalDate());
 		aplicacaoEncontrada.setNota(rs.getString("nota"));
 		} catch(SQLException e) {
-			System.out.println("Erro ao registro de aplicacao do construirDoResultSet");
+			System.out.println("Erro ao constuir registro da Aplicação solcitada do resultSet.\nErro: "+e.getMessage());
 		}
 		return aplicacaoEncontrada;
 	}
-	public ArrayList<AplicacaoVO> buscarTodasAplicacoes(){
-		ArrayList<AplicacaoVO> aplicacoesEncontradas = new ArrayList<AplicacaoVO>();
+	public ArrayList<Aplicacao> buscarTodasAplicacoes(){
+		ArrayList<Aplicacao> aplicacoesEncontradas = new ArrayList<Aplicacao>();
 		Connection conn = Banco.getConnection();
 		String sql = "select * from aplicacao";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
@@ -117,7 +117,7 @@ public class AplicacaoDAO {
 				aplicacoesEncontradas.add(construirDoResultSet(rs));
 			}
 		} catch(SQLException e) {
-			System.out.println("Erro ao buscar todo registro de aplicações.\nErro: "+e.getMessage());
+			System.out.println("Erro ao buscar todo registro de Aplicações.\nErro: "+e.getMessage());
 		}
 		return aplicacoesEncontradas;
 	}

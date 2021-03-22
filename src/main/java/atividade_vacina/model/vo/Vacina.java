@@ -2,7 +2,7 @@ package atividade_vacina.model.vo;
 
 import java.time.LocalDate;
 
-public class VacinaVO {
+public class Vacina {
 	
 	private int id;
 	private String nome;
@@ -11,9 +11,9 @@ public class VacinaVO {
 	private LocalDate dtInicioPesquisa;
 	private LocalDate dtTerminoPesquisa;
 	private int quantidadeDoses;
-	private PesquisadorVO responsavel;
+	private Pesquisador responsavel;
 	
-	public VacinaVO(String nome, String paisOrigem, String estagioPesquisa, LocalDate dtInicioPesquisa, LocalDate dtTerminoPesquisa, int quantidadeDoses, PesquisadorVO responsavel) {
+	public Vacina(String nome, String paisOrigem, String estagioPesquisa, LocalDate dtInicioPesquisa, LocalDate dtTerminoPesquisa, int quantidadeDoses, Pesquisador responsavel) {
 		super();
 		this.nome = nome;
 		this.paisOrigem = paisOrigem;
@@ -23,7 +23,7 @@ public class VacinaVO {
 		this.quantidadeDoses = quantidadeDoses;
 		this.responsavel = responsavel;
 	}
-	public VacinaVO() {
+	public Vacina() {
 		super();
 	}
 	
@@ -74,10 +74,10 @@ public class VacinaVO {
 	public int getQuantidadeDoses() {
 		return quantidadeDoses;
 	}
-	public PesquisadorVO getPesquisador() {
+	public Pesquisador getPesquisador() {
 		return responsavel;
 	}
-	public void setPesquisador(PesquisadorVO pesquisador) {
+	public void setPesquisador(Pesquisador pesquisador) {
 		this.responsavel = pesquisador;
 	}
 	

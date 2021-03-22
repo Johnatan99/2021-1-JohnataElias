@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class PessoaVO {
+public class Pessoa {
 	
 	private int id;
 	private String nome;
@@ -13,9 +13,9 @@ public class PessoaVO {
 	private char sexo;
 	private String cpf;
 	private String tipoPessoa;	
-	private AplicacaoVO aplicacao;
+	private Aplicacao aplicacao;
 	
-	public PessoaVO(String nome, String sobrenome, LocalDate dtNascimento, char sexo, String cpf,  String tipoPessoa, AplicacaoVO aplicacao) {
+	public Pessoa(String nome, String sobrenome, LocalDate dtNascimento, char sexo, String cpf,  String tipoPessoa, Aplicacao aplicacao) {
 		super();
 		this.nome = nome;
 		this.sobrenome = sobrenome;
@@ -26,7 +26,7 @@ public class PessoaVO {
 		this.aplicacao = aplicacao;
 	}
 
-	public PessoaVO() {
+	public Pessoa() {
 		super();
 	}
 	
@@ -79,10 +79,10 @@ public class PessoaVO {
 	public void setTipoPessoa(String tipoPessoa) {
 		this.tipoPessoa=tipoPessoa;
 	}
-	public AplicacaoVO getAplicacao() {
+	public Aplicacao getAplicacao() {
 		return aplicacao;
 	}
-	public void setAplicacao(AplicacaoVO aplicacao) {
+	public void setAplicacao(Aplicacao aplicacao) {
 		this.aplicacao = aplicacao;
 	}
 	@Override
