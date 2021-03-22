@@ -5,11 +5,21 @@ import java.util.ArrayList;
 
 public class VoluntarioVO extends PessoaVO{
 	
-	public VoluntarioVO(String nome, String sobrenome, LocalDate dtNascimento, char sexo, String cpf,
-			ArrayList<AplicacaoVacinaVO> aplicacao) {
-		super(nome, sobrenome, dtNascimento, sexo, cpf, aplicacao);
+	private int id;
+	
+	public VoluntarioVO(String nome, String sobrenome, LocalDate dtNascimento, char sexo, String cpf,  String tipoPessoa,
+			AplicacaoVO aplicacao) {
+		super(nome, sobrenome, dtNascimento, sexo, cpf, tipoPessoa, aplicacao);
 	}
 	public VoluntarioVO() {
 		super();
 	}
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 }

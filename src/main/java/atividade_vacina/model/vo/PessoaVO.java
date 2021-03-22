@@ -12,15 +12,17 @@ public class PessoaVO {
 	private LocalDate dtNascimento;
 	private char sexo;
 	private String cpf;
-	private ArrayList<AplicacaoVacinaVO> aplicacao;
+	private String tipoPessoa;	
+	private AplicacaoVO aplicacao;
 	
-	public PessoaVO(String nome, String sobrenome, LocalDate dtNascimento, char sexo, String cpf, ArrayList<AplicacaoVacinaVO> aplicacao) {
+	public PessoaVO(String nome, String sobrenome, LocalDate dtNascimento, char sexo, String cpf,  String tipoPessoa, AplicacaoVO aplicacao) {
 		super();
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.dtNascimento = dtNascimento;
 		this.sexo = sexo;
 		this.cpf = cpf;
+		this.tipoPessoa=tipoPessoa;
 		this.aplicacao = aplicacao;
 	}
 
@@ -71,13 +73,18 @@ public class PessoaVO {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	public ArrayList<AplicacaoVacinaVO> getAplicacao() {
+	public String getTipoPessoa() {
+		return tipoPessoa;
+	}
+	public void setTipoPessoa(String tipoPessoa) {
+		this.tipoPessoa=tipoPessoa;
+	}
+	public AplicacaoVO getAplicacao() {
 		return aplicacao;
 	}
-	public void setAplicacao(ArrayList<AplicacaoVacinaVO> aplicacao) {
+	public void setAplicacao(AplicacaoVO aplicacao) {
 		this.aplicacao = aplicacao;
 	}
-
 	@Override
 	public String toString() {
 		return "PessoaVO [id=" + id + ", nome=" + nome + ", sobrenome=" + sobrenome + ", dtNascimento=" + dtNascimento

@@ -5,23 +5,23 @@ import java.util.Date;
 public class VacinaVO {
 	
 	private int id;
-	private String nomeVacina;
+	private String nome;
 	private String paisOrigem;
 	private String estagioPesquisa;
 	private Date dtInicioPesquisa;
 	private Date dtTerminoPesquisa;
 	private int quantidadeDoses;
-	private PesquisadorVO pesquisador;
+	private PesquisadorVO responsavel;
 	
-	public VacinaVO(String nomeVacina, String paisOrigem, String estagioPesquisa, Date dtInicioPesquisa, Date dtTerminoPesquisa, int quantidadeDoses, PesquisadorVO pesquisador) {
+	public VacinaVO(String nome, String paisOrigem, String estagioPesquisa, Date dtInicioPesquisa, Date dtTerminoPesquisa, int quantidadeDoses, PesquisadorVO responsavel) {
 		super();
-		this.nomeVacina = nomeVacina;
+		this.nome = nome;
 		this.paisOrigem = paisOrigem;
 		this.estagioPesquisa = estagioPesquisa;
 		this.dtInicioPesquisa = dtInicioPesquisa;
 		this.dtTerminoPesquisa = dtTerminoPesquisa;
 		this.quantidadeDoses = quantidadeDoses;
-		this.pesquisador = pesquisador;
+		this.responsavel = responsavel;
 	}
 	public VacinaVO() {
 		super();
@@ -34,10 +34,10 @@ public class VacinaVO {
 		this.id = id;
 	}
 	public String getNomeVacina() {
-		return nomeVacina;
+		return nome;
 	}
 	public void setNomeVacina(String nomeVacina) {
-		this.nomeVacina = nomeVacina;
+		this.nome = nomeVacina;
 	}
 	
 	public String getPaisOrigem() {
@@ -75,16 +75,16 @@ public class VacinaVO {
 		return quantidadeDoses;
 	}
 	public PesquisadorVO getPesquisador() {
-		return pesquisador;
+		return responsavel;
 	}
 	public void setPesquisador(PesquisadorVO pesquisador) {
-		this.pesquisador = pesquisador;
+		this.responsavel = pesquisador;
 	}
 	
 	@Override
 	public String toString() {
-		return "VacinaVO [id=" + id + ", nomeVacina=" + nomeVacina + ", paisOrigem=" + paisOrigem + ", estagioPesquisa="
+		return "VacinaVO [id=" + id + ", nomeVacina=" + nome + ", paisOrigem=" + paisOrigem + ", estagioPesquisa="
 				+ estagioPesquisa + ", dtInicioPesquisa=" + dtInicioPesquisa + ", dtTerminoPesquisa="
-				+ dtTerminoPesquisa + ", quantidadeDoses=" + quantidadeDoses + ", pesquisador=" + pesquisador + "]";
+				+ dtTerminoPesquisa + ", quantidadeDoses=" + quantidadeDoses + ", pesquisador=" + responsavel + "]";
 	}	
 }

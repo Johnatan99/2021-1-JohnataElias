@@ -7,12 +7,14 @@ import java.sql.SQLException;
 
 import java.util.ArrayList;
 import atividade_vacina.model.vo.PessoaVO;
+import atividade_vacina.model.vo.AplicacaoVO;
+import atividade_vacina.model.dao.PessoaDAO;
 
 public class PessoaDAO {
 	
 	public PessoaVO cadastrar(PessoaVO novaPessoa) {
 		Connection conn = Banco.getConnection();
-		String sql="insert into pessoa(nome, sobrenome, dtNascimento, sexo, cpf) values(?, ?, ?, ?, ?)";
+		String sql="insert into pessoa(nome, sobrenome, dtNascimento, sexo, cpf, fkidAplicacao) values(?, ?, ?, ?, ?, 6)";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
 		ResultSet rs = null;
 		try {
@@ -21,13 +23,14 @@ public class PessoaDAO {
 			ps.setDate(3, java.sql.Date.valueOf(novaPessoa.getDtNascimento()));
 			ps.setString(4, String.valueOf(novaPessoa.getSexo()));
 			ps.setString(5, novaPessoa.getCpf());
+			ps.setInt(6, novaPessoa.getAplicacao().getId());
 			ps.execute();
 			rs = ps.getGeneratedKeys();
 			if(rs.next()) {
 				novaPessoa.setId(rs.getInt(1));
 			}
 		} catch(SQLException e) {
-			System.out.println("Erro ao cadastrar nova pessoa.\nErro: "+e.getMessage());
+			System.out.println("Erro ao cadastrar pessoa.\nErro: "+e.getMessage());
 		} finally{
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
@@ -37,7 +40,7 @@ public class PessoaDAO {
 	}
 	public boolean alterar(PessoaVO pessoaAlterada, Integer id) {
 		Connection conn = Banco.getConnection();
-		String sql="update pessoa set nome=?, sobrenome=?, dtNascimento=?, sexo=?, cpf=?"
+		String sql="update pessoa set nome=?, sobrenome=?, dtNascimento=?, sexo=?, cpf=?, fkidAplicacao"
 				+ "where idPessoa=?";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
 		ResultSet rs = null;
@@ -48,6 +51,7 @@ public class PessoaDAO {
 			ps.setDate(3, java.sql.Date.valueOf(pessoaAlterada.getDtNascimento()));
 			ps.setString(4, String.valueOf(pessoaAlterada.getSexo()));
 			ps.setString(5, pessoaAlterada.getCpf());
+			ps.setInt(6, pessoaAlterada.getAplicacao().getId());
 			ps.setInt(6, id);
 			int numLinhasAlteradas = ps.executeUpdate();
 			resposta = numLinhasAlteradas>0;
@@ -86,6 +90,10 @@ public class PessoaDAO {
 			pessoaEncontrada.setDtNascimento(rs.getDate("dtNascimento").toLocalDate());
 			pessoaEncontrada.setSexo(rs.getString("sexo").charAt(0));
 			pessoaEncontrada.setCpf(rs.getString("cpf"));
+			
+			AplicacaoDAO aplicacaoDAO = new AplicacaoDAO();
+			AplicacaoVO aplicacaoVO = aplicacaoDAO.buscarPorId(rs.getInt("idAplicacao"));
+			pessoaEncontrada.setAplicacao(aplicacaoVO);
 		} catch(SQLException e) {
 			System.out.println("Erro ao buscar pessoa.\nErro: "+e.getMessage());
 		}
@@ -97,10 +105,9 @@ public class PessoaDAO {
 		Connection conn = Banco.getConnection();
 		String sql="select * from pessoa where idPessoa=?";
 		PreparedStatement ps = Banco.getPreparedStatement(conn, sql);
-		ResultSet rs = null;
 		try {
 			ps.setInt(1, id);
-			rs = ps.executeQuery();
+			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
 				pessoaEncontrada = construirPessoDoResultSet(rs);
 			}

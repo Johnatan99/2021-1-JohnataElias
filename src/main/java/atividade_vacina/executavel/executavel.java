@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import atividade_vacina.model.dao.VacinaDAO;
 import atividade_vacina.model.vo.VacinaVO; 
 import atividade_vacina.model.vo.PessoaVO;
-import atividade_vacina.model.vo.AplicacaoVacinaVO;
+import atividade_vacina.model.vo.Aplicacao;
 import atividade_vacina.model.vo.PesquisadorVO;
 
 //import atividade_vacina.model.dao.PesquisadorDAO;
@@ -19,18 +19,21 @@ import atividade_vacina.model.dao.PessoaDAO;
 public class executavel {	
 	public static void main(String args[]) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy");
-		ArrayList<AplicacaoVacinaVO> aplicacaoP1 = new ArrayList<AplicacaoVacinaVO>();
-		ArrayList<AplicacaoVacinaVO> aplicacaoP2 = new ArrayList<AplicacaoVacinaVO>();
+		ArrayList<Aplicacao> aplicacaoP1 = new ArrayList<Aplicacao>();
+		ArrayList<Aplicacao> aplicacaoP2 = new ArrayList<Aplicacao>();
 	
 		PessoaVO pessoa1 = new PessoaVO("Mano", "do Corre da Silva" , LocalDate.of(1980, 8, 06) , 'M', "111.111.111-11", null);
 		PessoaVO pessoa2 = new PessoaVO("Mano", "do Corre da Silva" , LocalDate.of(1980, 8, 06) , 'M', "111.111.111-11", null);
+		
+		PesquisadorVO pesquisador1 = new PesquisadorVO("Mano", "do Corre da Silva" , LocalDate.of(1980, 8, 06) , 'M', "111.111.111-11", null);
 
 		//VacinaVO novaVacina = new VacinaVO("CoronaVac", "China", "aplicação em massa", null, null, 200, null);
 		
-		//VacinaDAO vdao = new VacinaDAO();
-		PessoaDAO pdao = new PessoaDAO();
-		pdao.cadastrar(pessoa1);
-		pdao.cadastrar(pessoa2);
+		VacinaDAO vdao = new VacinaDAO();
+		//vdao.cadastrar(novaVacina);
+		//PessoaDAO pdao = new PessoaDAO();
+		//pdao.cadastrar(pessoa1);
+		//pdao.cadastrar(pessoa2);
 		//pessoa2.setNome("ManoB");
 		//pdao.alterar(pessoa2, 1);
 		//pdao.excluir(l);
