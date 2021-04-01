@@ -6,6 +6,6 @@ public class Executavel2 {
 	
 	public static void main(String[] args) {
 		MenuVacina menuVacina = new MenuVacina();
-		menuVacina.apresentarOpcoesMenuVacina();
+		menuVacina.MenuVacina();
 	}
 }
