@@ -9,7 +9,7 @@ import telefonia.model.vo.EnderecoVO;
 import telefonia.model.vo.TelefoneVO;
 
 import telefonia.model.dao.EnderecoDAO;
-
+import telefonia.model.dao.TelefoneDAO;
 public class PrincipalTelefonia {
 
 	public static void main(String args[]) {
@@ -19,14 +19,17 @@ public class PrincipalTelefonia {
 		for(ClienteVO c : clientes) {
 			System.out.println("Cliente : "+c.toString());
 		}
-		//EnderecoVO novoEndereco = new EnderecoVO("Rua da corre", "12345-123", "SC",  "Correlandia", "157");
-		EnderecoDAO dao = new EnderecoDAO();
-		//dao.cadastrar(novoEndereco);
-		//System.out.println(dao.cadastrar(novoEndereco));
-		//novoEndereco.setLogradouro("Rua do corre");
-		//dao.alterar(novoEndereco, 1);
-		//dao.excluir(1);
+		EnderecoVO novoEndereco = new EnderecoVO("Rua da corre", "12345-123", "SC",  "Correlandia", "157");
+		EnderecoDAO eDAO = new EnderecoDAO();
+		eDAO.cadastrar(novoEndereco);
+		System.out.println(eDAO.cadastrar(novoEndereco));
+		novoEndereco.setLogradouro("Rua do corre");
+		//eDAO.alterar(novoEndereco);
+		//eDAO.excluir(1);
 		//System.out.println(dao.buscarPorId(1));
+		//TelefoneDAO tDAO = new TelefoneDAO();
+		//TelefoneVO telefone = new TelefoneVO("55", "48", "988327191", null, true , true);
+		//tDAO.cadastrar(telefone);
 	}
 	private static ArrayList<ClienteVO> criarClientes(){
 		ArrayList<TelefoneVO> telefones1 = new ArrayList<TelefoneVO>();
@@ -47,12 +50,12 @@ public class PrincipalTelefonia {
 		String codigoInternacional = String.valueOf(new Random().nextInt(99));
 		String ddd = String.valueOf(new Random().nextInt(99));
 		String numero = String.valueOf(new Random().nextInt(99999999));
+		int idCliente = Integer.valueOf(new Random().nextInt(99));
 		boolean ativo = new Random().nextInt(2) > 0;
 		boolean movel = new Random().nextInt(2) > 0;
-		TelefoneVO novoTelefone = new TelefoneVO(codigoInternacional, ddd, numero, ativo, movel);
+		TelefoneVO novoTelefone = new TelefoneVO(codigoInternacional, ddd, numero, idCliente, movel, ativo);
 		return novoTelefone;
 	}
-
 	private static ArrayList<TelefoneVO> criarTelefonesAleatorios(){
 		ArrayList<TelefoneVO> telefones = new ArrayList<TelefoneVO>();
 
@@ -82,7 +85,7 @@ public class PrincipalTelefonia {
 		novoCliente.setNome(nome);
 		novoCliente.setCpf(cpf);
 		novoCliente.setTelefones(criarTelefonesAleatorios());
-		novoCliente.setEnderecoCliente(criarEnderecoAleatorio());
+		novoCliente.setEndereco(criarEnderecoAleatorio());
 		novoCliente.isAtivo();
 		return novoCliente;
 	}

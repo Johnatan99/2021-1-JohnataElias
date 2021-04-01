@@ -1,23 +1,23 @@
 package telefonia.model.vo;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class ClienteVO {
 	
 	private Integer id;
 	private String nome;
 	private String cpf;
-	private List<TelefoneVO> telefones;
-	private EnderecoVO  enderecoCliente;
+	private ArrayList<TelefoneVO> telefones;
+	private EnderecoVO endereco;
 	private boolean ativo;
 	
-	public ClienteVO(String nome, String cpf, List<TelefoneVO> telefones, EnderecoVO enderecoCliente,
+	public ClienteVO(String nome, String cpf, ArrayList<TelefoneVO> telefones, EnderecoVO endereco,
 			boolean ativo) {
 		super();
 		this.nome = nome;
 		this.cpf = cpf;
 		this.telefones = telefones;
-		this.enderecoCliente = enderecoCliente;
+		this.endereco = endereco;
 		this.ativo = ativo;
 	}
 	public ClienteVO() {
@@ -42,17 +42,17 @@ public class ClienteVO {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	public List<TelefoneVO> getTelefones() {
+	public ArrayList<TelefoneVO> getTelefones() {
 		return telefones;
 	}
-	public void setTelefones(List<TelefoneVO> telefones) {
+	public void setTelefones(ArrayList<TelefoneVO> telefones) {
 		this.telefones = telefones;
 	}
-	public EnderecoVO getEnderecoCliente() {
-		return enderecoCliente;
+	public EnderecoVO getEndereco() {
+		return endereco;
 	}
-	public void setEnderecoCliente(EnderecoVO enderecoCliente) {
-		this.enderecoCliente = enderecoCliente;
+	public void setEndereco(EnderecoVO endereco) {
+		this.endereco = endereco;
 	}
 	public boolean isAtivo() {
 		return ativo;
@@ -65,11 +65,13 @@ public class ClienteVO {
 		String textoTelefones = this.getTelefones().toString();
 		if(this.getTelefones().isEmpty()) {
 			textoTelefones = "Sem telefones";
+		}else {
+			textoTelefones = telefones.toString();
 		}
 		return "\nNome: "+this.getNome()
 			 + "\nCPF: "+this.getCpf()
 			 + "\nSituação : "+(this.isAtivo() ? "Ativo" : "Inativo")
-		     + "\nEndereco: "+this.getEnderecoCliente()
+		     + "\nEndereco: "+this.getEndereco()
 		     + "\nTelefones: "+textoTelefones;
 	}
 }

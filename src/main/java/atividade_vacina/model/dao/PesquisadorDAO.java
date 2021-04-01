@@ -6,27 +6,36 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import atividade_vacina.model.vo.Pessoa;
-import atividade_vacina.model.vo.Pesquisador;
-import atividade_vacina.model.vo.Vacina;
+import atividade_vacina.model.intity.Pesquisador;
+import atividade_vacina.model.intity.Pessoa;
+import atividade_vacina.model.intity.Vacina;
 
-public class PesquisadorDAO {
+public class PesquisadorDAO implements BaseDAO<Pesquisador>{
 	
-	private Pessoa pessoa = new Pessoa();
 	public Pesquisador cadastrar(Pesquisador novoPesquisador) {
 		Connection conn = Banco.getConnection();
-		String sql="insert into pesquisador(instituicao, fkIdVacinaCriada, fkIdPessoa) values(?, ?, ?)";
+		String sql="insert into pessoa(nome, sobrenome, dtNascimento, sexo, cpf, tipoPessoa, fkidAplicacao) values(?, ?, ?, ?, ?, ?, ?)";
+		String sql2="insert into pesquisador(instituicao, fkIdVacinaCriada, fkIdPessoa) values(?, ?, ?)";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
+		PreparedStatement ps2 = Banco.getPreparedStatementWithPk(conn, sql2);
 		ResultSet rs = null;
 		try {
-			ps.setString(1, novoPesquisador.getInstituicao());
-			ps.setInt(2, novoPesquisador.getVacinaCriada().getId());
-			ps.setInt(3, pessoa.getId());
+			ps.setString(1, novoPesquisador.getNome());
+			ps.setString(2, novoPesquisador.getSobrenome());
+			ps.setDate(3, java.sql.Date.valueOf(novoPesquisador.getDtNascimento()));
+			ps.setString(4, String.valueOf(novoPesquisador.getSexo()));
+			ps.setString(5, novoPesquisador.getCpf());
+			ps.setString(6, novoPesquisador.getTipoPessoa());
+			ps.setInt(7, novoPesquisador.getAplicacao().getId());
 			ps.execute();
 			rs = ps.getGeneratedKeys();
 			if(rs.next()) {
 				novoPesquisador.setId(rs.getInt(1));
 			}
+			ps2.setString(1, novoPesquisador.getInstituicao());
+			ps2.setInt(2, novoPesquisador.getVacinaCriada().getId());
+			ps2.setInt(3, novoPesquisador.getId());
+			ps2.execute();
 		} catch(SQLException e) {
 			System.out.println("Erro ao cadastrar Pesquisador.\nErro: "+e.getMessage());
 		} finally{
@@ -38,16 +47,28 @@ public class PesquisadorDAO {
 	}
 	public boolean alterar(Pesquisador pesquisadorAlterado) {
 		Connection conn = Banco.getConnection();
-		String sql="update pesquisador set instituicao=?, fkIdVacinaCriada=?, fkIdPessoa=?"
-				+ "where idPesquisador=?";
+		String sql="update pessoa set nome=?, sobrenome=?, dtNascimento=?, sexo=?, cpf=?, tipoPessoa=?, fkIdAplicacao=? where idPessoa=?;";
+		String sql2="update pesquisador set instituicao=?, fkIdVacinaCriada=?, fkIdPessoa=? where idPesquisador=?;";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
+		PreparedStatement ps2 = Banco.getPreparedStatementWithPk(conn, sql2);
 		boolean resposta = false;
+		Pessoa pessoa = new Pessoa();
 		try {
-			ps.setString(1, pesquisadorAlterado.getInstituicao());
-			ps.setInt(2, pesquisadorAlterado.getVacinaCriada().getId());
-			ps.setInt(3, pessoa.getId());
-			ps.setInt(4, pesquisadorAlterado.getId());
+			ps.setString(1, pesquisadorAlterado.getNome());
+			ps.setString(2, pesquisadorAlterado.getSobrenome());
+			ps.setDate(3, java.sql.Date.valueOf(pesquisadorAlterado.getDtNascimento()));
+			ps.setString(4, String.valueOf(pesquisadorAlterado.getSexo()));
+			ps.setString(5, pesquisadorAlterado.getCpf());
+			ps.setString(6, pesquisadorAlterado.getTipoPessoa());
+			ps.setInt(7, pesquisadorAlterado.getAplicacao().getId()); 
+			ps.setInt(8, pesquisadorAlterado.getId());
+			
+			ps2.setString(1, pesquisadorAlterado.getInstituicao());
+			ps2.setInt(2, pesquisadorAlterado.getVacinaCriada().getId());
+			ps2.setInt(3, pesquisadorAlterado.getId());
+			ps2.setInt(4, pesquisadorAlterado.getId());
 			ps.executeUpdate();
+			ps2.executeUpdate();
 			int numLinhasAlteradas = ps.executeUpdate();
 			resposta = numLinhasAlteradas>0;
 		} catch(SQLException e) {
@@ -120,7 +141,7 @@ public class PesquisadorDAO {
 		ResultSet rs = null;
 		try {
 			rs = ps.executeQuery();
-			if(rs.next()) {
+			while(rs.next()) {
 				pesquisadoresEncontrados.add(construirDoResultSet(rs));
 			}
 		} catch(SQLException e) {

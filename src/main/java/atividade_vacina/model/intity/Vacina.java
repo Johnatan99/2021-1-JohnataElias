@@ -1,4 +1,4 @@
-package atividade_vacina.model.vo;
+package atividade_vacina.model.intity;
 
 import java.time.LocalDate;
 
@@ -11,9 +11,8 @@ public class Vacina {
 	private LocalDate dtInicioPesquisa;
 	private LocalDate dtTerminoPesquisa;
 	private int quantidadeDoses;
-	private Pesquisador responsavel;
 	
-	public Vacina(String nome, String paisOrigem, String estagioPesquisa, LocalDate dtInicioPesquisa, LocalDate dtTerminoPesquisa, int quantidadeDoses, Pesquisador responsavel) {
+	public Vacina(String nome, String paisOrigem, String estagioPesquisa, LocalDate dtInicioPesquisa, LocalDate dtTerminoPesquisa, int quantidadeDoses) {
 		super();
 		this.nome = nome;
 		this.paisOrigem = paisOrigem;
@@ -21,7 +20,6 @@ public class Vacina {
 		this.dtInicioPesquisa = dtInicioPesquisa;
 		this.dtTerminoPesquisa = dtTerminoPesquisa;
 		this.quantidadeDoses = quantidadeDoses;
-		this.responsavel = responsavel;
 	}
 	public Vacina() {
 		super();
@@ -74,17 +72,11 @@ public class Vacina {
 	public int getQuantidadeDoses() {
 		return quantidadeDoses;
 	}
-	public Pesquisador getPesquisador() {
-		return responsavel;
-	}
-	public void setPesquisador(Pesquisador pesquisador) {
-		this.responsavel = pesquisador;
-	}
 	
 	@Override
 	public String toString() {
 		return "VacinaVO [id=" + id + ", nomeVacina=" + nome + ", paisOrigem=" + paisOrigem + ", estagioPesquisa="
 				+ estagioPesquisa + ", dtInicioPesquisa=" + dtInicioPesquisa + ", dtTerminoPesquisa="
-				+ dtTerminoPesquisa + ", quantidadeDoses=" + quantidadeDoses + ", pesquisador=" + responsavel + "]";
+				+ dtTerminoPesquisa + ", quantidadeDoses=" + quantidadeDoses +"]";
 	}	
 }

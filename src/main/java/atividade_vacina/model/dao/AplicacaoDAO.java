@@ -4,15 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import atividade_vacina.model.vo.Vacina;
-import atividade_vacina.model.vo.Aplicacao;
-
 import java.util.ArrayList;
+
+import atividade_vacina.model.intity.Aplicacao;
+import atividade_vacina.model.intity.Vacina;
 
 public class AplicacaoDAO {
 	
-	public Aplicacao cadastrarAplicacao(Aplicacao novaAplicacao) {
+	public Aplicacao cadastrar(Aplicacao novaAplicacao) {
 		Connection conn = Banco.getConnection();
 		String sql="insert into aplicacao(fkIdVacina, dtAplicacao, nota) values(?, ?, ?)";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
@@ -106,7 +105,7 @@ public class AplicacaoDAO {
 		}
 		return aplicacaoEncontrada;
 	}
-	public ArrayList<Aplicacao> buscarTodasAplicacoes(){
+	public ArrayList<Aplicacao> buscarTodasAplicacoes(){   
 		ArrayList<Aplicacao> aplicacoesEncontradas = new ArrayList<Aplicacao>();
 		Connection conn = Banco.getConnection();
 		String sql = "select * from aplicacao";

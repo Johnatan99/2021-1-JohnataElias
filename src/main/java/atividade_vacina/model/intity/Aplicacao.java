@@ -1,4 +1,4 @@
-package atividade_vacina.model.vo;
+package atividade_vacina.model.intity;
 
 import java.time.LocalDate;
 
@@ -12,8 +12,11 @@ public class Aplicacao {
 	public Aplicacao() {
 		super();
 	}
-	public Aplicacao(Vacina vacina, LocalDate dtAplicacao) {
+	public Aplicacao(Vacina vacina, LocalDate dtAplicacao, String nota) {
 		super();
+		this.vacina=vacina;
+		this.dtAplicacao=dtAplicacao;
+		this.nota=nota;
 	}
 	public int getId() {
 		return id;

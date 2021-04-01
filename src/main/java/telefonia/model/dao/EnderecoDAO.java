@@ -16,7 +16,7 @@ import telefonia.model.vo.ClienteVO;
 import telefonia.model.vo.EnderecoVO;
 import telefonia.model.vo.TelefoneVO;
 
-public class EnderecoDAO {
+public class EnderecoDAO implements BaseDAO<EnderecoVO> {
 	
 	public EnderecoVO cadastrar(EnderecoVO novoEndereco) {
 		Connection conn = Banco.getConnection();
@@ -43,7 +43,7 @@ public class EnderecoDAO {
 		}
 		return novoEndereco;
 	}
-	public boolean alterar(EnderecoVO endereco, int id) {
+	public boolean alterar(EnderecoVO endereco) {
 		Connection conn = Banco.getConnection();
 		String sql = "update endereco set logradouro=?, cep=?, uf=?, cidade=?, numero=?"
 				+ "where idEndereco=?";
@@ -55,7 +55,7 @@ public class EnderecoDAO {
 			ps.setString(3, endereco.getUf());
 			ps.setString(4, endereco.getCidade());
 			ps.setString(5, endereco.getNumero());
-			ps.setInt(6, id);
+			ps.setInt(6, endereco.getId());
 			int linhasAfetadas = ps.executeUpdate(); //ps.executeUpdate() retorna a quantidade de linhas afetadas
 			 resposta = linhasAfetadas > 0;
 		} catch(SQLException e) {
@@ -66,7 +66,7 @@ public class EnderecoDAO {
 		}
 		return resposta;
 	}
-	public boolean excluir(Integer id) {
+	public boolean excluir(int id) {
 		Connection conn = Banco.getConnection();
 		String sql = "delete from endereco where idEndereco=?";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
@@ -86,7 +86,7 @@ public class EnderecoDAO {
 		return enderecoEncontrado;
 	}
 	
-	public EnderecoVO buscarPorId(Integer id) {
+	public EnderecoVO buscarPorId(int id) {
 		EnderecoVO enderecoEncontrado = new EnderecoVO();
 		Connection conn = Banco.getConnection();
 		String sql="select * from endereco where idEndereco=?";
@@ -111,7 +111,7 @@ public class EnderecoDAO {
 		}
 		return enderecoEncontrado;
 	}
-	public List<EnderecoVO> buscarTodosEnderecos(){
+	public ArrayList<EnderecoVO> buscarTodos(){
 		Connection conn = Banco.getConnection();
 		String sql = "select * from endereco";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);

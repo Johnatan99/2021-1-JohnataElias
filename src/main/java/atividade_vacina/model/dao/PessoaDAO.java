@@ -6,15 +6,17 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
-import atividade_vacina.model.vo.Pessoa;
-import atividade_vacina.model.vo.Aplicacao;
-import atividade_vacina.model.dao.PessoaDAO;
 
-public class PessoaDAO {
+import atividade_vacina.model.dao.PessoaDAO;
+import atividade_vacina.model.intity.Aplicacao;
+import atividade_vacina.model.intity.Pessoa;
+import atividade_vacina.model.intity.Vacina;
+
+public class PessoaDAO implements BaseDAO<Pessoa> {
 	
 	public Pessoa cadastrar(Pessoa novaPessoa) {
 		Connection conn = Banco.getConnection();
-		String sql="insert into pessoa(nome, sobrenome, dtNascimento, sexo, cpf, fkidAplicacao) values(?, ?, ?, ?, ?, 6)";
+		String sql="insert into pessoa(nome, sobrenome, dtNascimento, sexo, cpf, tipoPessoa, fkIdAplicacao) values(?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
 		ResultSet rs = null;
 		try {
@@ -23,7 +25,8 @@ public class PessoaDAO {
 			ps.setDate(3, java.sql.Date.valueOf(novaPessoa.getDtNascimento()));
 			ps.setString(4, String.valueOf(novaPessoa.getSexo()));
 			ps.setString(5, novaPessoa.getCpf());
-			ps.setInt(6, novaPessoa.getAplicacao().getId());
+			ps.setString(6, novaPessoa.getTipoPessoa());
+			ps.setInt(7, novaPessoa.getAplicacao().getId());
 			ps.execute();
 			rs = ps.getGeneratedKeys();
 			if(rs.next()) {
@@ -38,7 +41,7 @@ public class PessoaDAO {
 		}
 		return novaPessoa;
 	}
-	public boolean alterar(Pessoa pessoaAlterada, Integer id) {
+	public boolean alterar(Pessoa pessoaAlterada) {
 		Connection conn = Banco.getConnection();
 		String sql="update pessoa set nome=?, sobrenome=?, dtNascimento=?, sexo=?, cpf=?, fkidAplicacao"
 				+ "where idPessoa=?";
@@ -52,7 +55,7 @@ public class PessoaDAO {
 			ps.setString(4, String.valueOf(pessoaAlterada.getSexo()));
 			ps.setString(5, pessoaAlterada.getCpf());
 			ps.setInt(6, pessoaAlterada.getAplicacao().getId());
-			ps.setInt(6, id);
+			ps.setInt(6, pessoaAlterada.getId());
 			int numLinhasAlteradas = ps.executeUpdate();
 			resposta = numLinhasAlteradas>0;
 		} catch(SQLException e) {
@@ -81,7 +84,7 @@ public class PessoaDAO {
 		return resposta;
 	}
 	
-	public Pessoa construirPessoDoResultSet(ResultSet rs) {
+	public Pessoa construirDoResultSet(ResultSet rs) {
 		Pessoa pessoaEncontrada = new Pessoa();
 		try {
 			pessoaEncontrada.setId(rs.getInt("idPessoa"));
@@ -109,7 +112,7 @@ public class PessoaDAO {
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
-				pessoaEncontrada = construirPessoDoResultSet(rs);
+				pessoaEncontrada = construirDoResultSet(rs);
 			}
 		} catch(SQLException e) {
 			System.out.println("Erro ao encontrar registros de Pessoa solicitada.\nErro: "+e.getMessage());
@@ -127,8 +130,8 @@ public class PessoaDAO {
 		ResultSet rs = null;
 		try {
 			rs = ps.executeQuery();
-			if(rs.next()) {
-				pessoasEncontradas.add(construirPessoDoResultSet(rs));
+			while(rs.next()) {
+				pessoasEncontradas.add(construirDoResultSet(rs));
 			}
 		} catch(SQLException e) {
 			System.out.println("Erro ao buscar todos registros de Pessoas.\nErro: "+e.getMessage());
@@ -138,6 +141,5 @@ public class PessoaDAO {
 			Banco.closeResultSet(rs);
 		}
 		return pessoasEncontradas;
-	} 
-	
+	}	
 }
