@@ -41,14 +41,14 @@ public class VacinaDAO implements BaseDAO<Vacina>{
 		return novaVacina;
 	}
 	public boolean excluir(int id) {
-		String sql = "delete from vacina where idVacina = ?";
-		boolean resposta = true;
+		String sql = "delete from vacina where idVacina=?";
+		boolean resposta = false;
 		Connection conn = Banco.getConnection();
 		PreparedStatement ps = Banco.getPreparedStatement(conn, sql);
 		int numLinhasAfetadas = 0;
 		try {
 			ps.setInt(1, id);
-			numLinhasAfetadas = ps.executeUpdate(sql);
+			numLinhasAfetadas = ps.executeUpdate();
 		} catch(SQLException e) {
 			System.out.println("Erro ao excluir registro da Vacina.\nErro: "+e.getMessage());
 		} finally {
