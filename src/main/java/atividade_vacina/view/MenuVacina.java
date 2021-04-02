@@ -1,10 +1,11 @@
 package atividade_vacina.view;
 
 import java.time.LocalDate;
-
+import java.util.ArrayList;
 import java.awt.EventQueue;
 import java.text.SimpleDateFormat;
 
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -33,9 +34,12 @@ public class MenuVacina {
 		try {
 			 opcaoSelecionada = Integer.parseInt(JOptionPane.showInputDialog(null, mensagem, titulo, JOptionPane.QUESTION_MESSAGE));
 		} catch(NumberFormatException nfe) {
-			JOptionPane.showMessageDialog(null, "ERRO", "O valor deve ser numérico", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Erro", "O valor deve ser numérico", JOptionPane.ERROR_MESSAGE);
 			this.apresentarOpcoesMenuVacina();
 		}
+		if(opcaoSelecionada == 5) {
+			 System.exit(1);
+		 }
 		return opcaoSelecionada;
 	}
 	
@@ -87,6 +91,7 @@ public class MenuVacina {
 		int resposta = JOptionPane.showConfirmDialog(null, "Desenja cadastrar mais alguma vacina?", "Escolha uma opção", JOptionPane.YES_NO_OPTION);
 		if(resposta == JOptionPane.YES_OPTION) {
 			this.cadastrarVacina();
+			JOptionPane.showMessageDialog(null, "Vacina cadastrada com sucesso.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 		} else {
 			int resposta2 = JOptionPane.showConfirmDialog(null, "Deseja voltar?", "Escolha uma opção", JOptionPane.YES_NO_OPTION);
 			if(resposta2 == JOptionPane.YES_OPTION) {
@@ -102,6 +107,12 @@ public class MenuVacina {
 		int id = Integer.parseInt(JOptionPane.showInputDialog(null, "Informe o código da vacina que deseja excluir:", "Excluir vacina", JOptionPane.QUESTION_MESSAGE));
 		if(vDAO.excluir(id) == true) {
 			JOptionPane.showMessageDialog(null, "Vacina excluída com sucesso.", "Aviso sobre ação",JOptionPane.INFORMATION_MESSAGE);
+			int resposta = JOptionPane.showConfirmDialog(null, "Deseja excluir mais alguma vacina?", "Pergunta", JOptionPane.YES_NO_OPTION);
+			if(resposta == JOptionPane.YES_OPTION) {
+				this.excluirVacina();
+			} else {
+				this.apresentarOpcoesMenuVacina();
+			}
 		} else {
 			int resposta = JOptionPane.showConfirmDialog(null, "Erro ao excluir vacina.\nDeseja tentar novamente?", "Erro", JOptionPane.YES_NO_OPTION);
 			if(resposta == JOptionPane.YES_OPTION) {
@@ -112,9 +123,29 @@ public class MenuVacina {
 		}
 	}
 	private void buscarVacinaPorId() {
-		
+		Vacina vacina = new Vacina();
+		VacinaDAO vDAO = new VacinaDAO();
+		int id = Integer.parseInt(JOptionPane.showInputDialog(null, "Informe o codigo da vacina:", "Buscar vacina", JOptionPane.QUESTION_MESSAGE));
+		if(id <= 0) {
+			int resposta = JOptionPane.showConfirmDialog(null, "Erro ao buscar vacina", "Erro", JOptionPane.YES_NO_OPTION);
+			if(resposta == JOptionPane.YES_OPTION) {
+				this.buscarVacinaPorId();
+			} else {
+				System.exit(1);
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, vDAO.buscarPorId(id), "Vacina encontrada", JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 	private void listarTodasVacinas() {
+		ArrayList<Vacina> vacinas = new ArrayList<Vacina>();
+		VacinaDAO vDAO = new VacinaDAO();
+		vacinas = vDAO.buscarTodos();
+		//String[] listaVacinas = vacinas.toArray(new String[0]);
+		String[] lista = {"Essa", "Merda", "Não", "Vai", "Com", "Array"};
+		JComboBox jcv = new JComboBox(lista);
+		JOptionPane.showMessageDialog(null, jcv, "Lista de Vacinas", JOptionPane.INFORMATION_MESSAGE);
 		
+
 	}
 }

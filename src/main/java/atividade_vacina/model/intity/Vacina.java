@@ -75,8 +75,7 @@ public class Vacina {
 	
 	@Override
 	public String toString() {
-		return "VacinaVO [id=" + id + ", nomeVacina=" + nome + ", paisOrigem=" + paisOrigem + ", estagioPesquisa="
-				+ estagioPesquisa + ", dtInicioPesquisa=" + dtInicioPesquisa + ", dtTerminoPesquisa="
-				+ dtTerminoPesquisa + ", quantidadeDoses=" + quantidadeDoses +"]";
+		return "\n(ID: "+id+", Nome: "+nome+", País de Origem: "+paisOrigem+", Estágio: "+estagioPesquisa
+				+", Data de início: "+dtInicioPesquisa+", Data de término: "+dtTerminoPesquisa+", Doses: " +quantidadeDoses+")";
 	}	
 }
