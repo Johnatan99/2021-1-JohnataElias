@@ -16,7 +16,7 @@ public class VacinaDAO implements BaseDAO<Vacina>{
 	
 	public Vacina cadastrar(Vacina novaVacina) {
 		Connection conn = Banco.getConnection();
-		String sql = "insert into vacina(nome, paisOrigem, estagioPesquisa, dtInicioPesquisa, dtTerminoPesquisa, quantidadeDoses) values(?, ?, ?, ?, ?, ?)";
+		String sql = "insert into vacina(nome, paisOrigem, estagioPesquisa, dtInicioPesquisa, dtTerminoPesquisa, quantidadeDoses, IdCriador) values(?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);	
 		ResultSet rs = null;
 		try {
@@ -26,13 +26,14 @@ public class VacinaDAO implements BaseDAO<Vacina>{
 			ps.setDate(4, java.sql.Date.valueOf(novaVacina.getDtInicioPesquisa()));
 			ps.setDate(5, java.sql.Date.valueOf(novaVacina.getDtTerminoPesquisa()));
 			ps.setInt(6, novaVacina.getQuantidadeDoses());
+			ps.setInt(7, novaVacina.getIdCriador());
 			ps.execute();
 			rs = ps.getGeneratedKeys();
 			if(rs.next()) {
 				novaVacina.setId(rs.getInt(1));
 			}
 		} catch(SQLException e){
-			System.out.println("Erro ao cadastrar vacina.\nErro: "+e.getMessage());
+			System.out.println("Erro ao cadastrar Vacina.\nErro: "+e.getMessage());
 		} finally {
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
@@ -42,20 +43,19 @@ public class VacinaDAO implements BaseDAO<Vacina>{
 	}
 	public boolean excluir(int id) {
 		String sql = "delete from vacina where idVacina=?";
-		boolean resposta = false;
 		Connection conn = Banco.getConnection();
 		PreparedStatement ps = Banco.getPreparedStatement(conn, sql);
 		int numLinhasAfetadas = 0;
+		boolean excluiu = false;
 		try {
 			ps.setInt(1, id);
-			numLinhasAfetadas = ps.executeUpdate();
+			excluiu = ps.executeUpdate()>0; // tirar dúvida
 		} catch(SQLException e) {
 			System.out.println("Erro ao excluir registro da Vacina.\nErro: "+e.getMessage());
 		} finally {
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
 		}
-		boolean excluiu = numLinhasAfetadas > 0;
 		return excluiu;
 	}
 	public boolean alterar(Vacina vacinaAlterada) {
@@ -64,8 +64,7 @@ public class VacinaDAO implements BaseDAO<Vacina>{
 		Connection conn = Banco.getConnection();
 		PreparedStatement ps = Banco.getPreparedStatement(conn, sql);
 		ResultSet rs = null;
-		boolean alterado = false;
-		int linhasAfetadas = 0;
+		boolean alterou = false;
 		try {
 			ps.setString(1, vacinaAlterada.getNomeVacina());
 			ps.setString(2, vacinaAlterada.getPaisOrigem());
@@ -73,7 +72,7 @@ public class VacinaDAO implements BaseDAO<Vacina>{
 			ps.setDate(4, java.sql.Date.valueOf(vacinaAlterada.getDtInicioPesquisa()));
 			ps.setDate(5, java.sql.Date.valueOf(vacinaAlterada.getDtTerminoPesquisa()));
 			ps.setInt(6, vacinaAlterada.getQuantidadeDoses());
-			linhasAfetadas = ps.executeUpdate();
+			alterou = ps.executeUpdate()>0;
 		} catch(SQLException e) {
 			System.out.println("Erro ao alterar registro de Vacina.\nErro: "+e.getMessage());
 		} finally {
@@ -81,7 +80,6 @@ public class VacinaDAO implements BaseDAO<Vacina>{
 			Banco.closePreparedStatement(ps);
 			Banco.closeResultSet(rs);
 		}
-		boolean alterou = linhasAfetadas > 0;
 		return alterou;
 	}
 	public Vacina construirDoResultSet(ResultSet rs) {
@@ -94,6 +92,7 @@ public class VacinaDAO implements BaseDAO<Vacina>{
 		vacinaEncontrada.setDtInicioPesquisa(rs.getDate("dtInicioPesquisa").toLocalDate());
 		vacinaEncontrada.setDtTerminoPesquisa(rs.getDate("dtTerminoPesquisa").toLocalDate());
 		vacinaEncontrada.setQuantidadeDoses(rs.getInt("quantidadeDoses"));
+		vacinaEncontrada.setIdCriador(rs.getInt("idCriador"));
 		} catch(SQLException e) {
 			System.out.println("Erro ao construir registro vacina do ResultSet.\nErro: "+e.getMessage());
 		}
@@ -113,6 +112,10 @@ public class VacinaDAO implements BaseDAO<Vacina>{
 			}
 		} catch(SQLException e) {
 			System.out.println("Erro ao buscar registro de Vacina. \nErro: "+e.getMessage());
+		} finally {
+			Banco.closeConnection(conn);
+			Banco.closePreparedStatement(ps);
+			Banco.closeResultSet(rs);
 		}
 		return vacinaEncontrada;
 	}
@@ -130,6 +133,10 @@ public class VacinaDAO implements BaseDAO<Vacina>{
 			}
 		} catch(SQLException e) {
 			System.out.println("Erro ao buscar registros da Vacina solicitada.\nErro: "+e.getMessage());
+		}finally {
+			Banco.closeConnection(conn);
+			Banco.closePreparedStatement(ps);
+			Banco.closeResultSet(rs);
 		}
 		return vacinaEncontrada;
 	}
@@ -147,6 +154,10 @@ public class VacinaDAO implements BaseDAO<Vacina>{
 			}
 		} catch(SQLException e) {
 			System.out.println("Erro ao buscar registros de Vacinas. \nErro: "+e.getMessage());
+		}finally {
+			Banco.closeConnection(conn);
+			Banco.closePreparedStatement(ps);
+			Banco.closeResultSet(rs);
 		}
 		return vacinaEncontradas;
 	}

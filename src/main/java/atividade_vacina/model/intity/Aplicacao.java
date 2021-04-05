@@ -3,12 +3,10 @@ package atividade_vacina.model.intity;
 import java.time.LocalDate;
 
 public class Aplicacao {
-	
 	private int id;
 	private Vacina vacina;
 	private LocalDate dtAplicacao;
 	private String nota;
-	
 	public Aplicacao() {
 		super();
 	}

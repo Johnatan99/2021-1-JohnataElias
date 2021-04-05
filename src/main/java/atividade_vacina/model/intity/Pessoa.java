@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Pessoa {
-	
 	private int id;
 	private String nome;
 	private String sobrenome;
@@ -14,7 +13,6 @@ public class Pessoa {
 	private String cpf;
 	private String tipoPessoa;	
 	private Aplicacao aplicacao;
-	
 	public Pessoa(String nome, String sobrenome, LocalDate dtNascimento, char sexo, String cpf,  String tipoPessoa, Aplicacao aplicacao) {
 		super();
 		this.nome = nome;
@@ -25,11 +23,9 @@ public class Pessoa {
 		this.tipoPessoa=tipoPessoa;
 		this.aplicacao = aplicacao;
 	}
-
 	public Pessoa() {
 		super();
 	}
-	
 	public int getId() {
 		return id;
 	}
@@ -51,13 +47,10 @@ public class Pessoa {
 	public String getNomeSobrenome() {
 		return this.nome+this.sobrenome;
 	}
-	
-	
 	public LocalDate getDtNascimento() {
 		
 		return dtNascimento;
 	}
-	
 	public void setDtNascimento(LocalDate dtNascimento) {
 		this.dtNascimento = dtNascimento;
 	}
@@ -87,10 +80,6 @@ public class Pessoa {
 	}
 	@Override
 	public String toString() {
-		return "PessoaVO [id=" + id + ", nome=" + nome + ", sobrenome=" + sobrenome + ", dtNascimento=" + dtNascimento
-				+ ", sexo=" + sexo + ", cpf=" + cpf ;
+		return "PessoaVO (id: " + id+", nome: "+nome+", sobrenome: "+sobrenome+", dtNascimento: "+dtNascimento+", sexo: "+sexo+", cpf: "+cpf+")" ;
 	}
-	
-	
-	
 }

@@ -15,11 +15,10 @@ public class PublicoGeralDAO {
 		
 	public PublicoGeral cadastrar(PublicoGeral novoPublicoGeral) {
 		Connection conn = Banco.getConnection();
-		String sql1 = "\"insert into pessoa(nome, sobrenome, dtNascimento, sexo, cpf, tipoPessoa, fkidAplicacao";
-		String sql2="insert into publicoGeral(fkIdPessoa) values(?)";
+		String sql1 = "insert into pessoa(nome, sobrenome, dtNascimento, sexo, cpf, tipoPessoa, fkidAplicacao";
+		String sql2="update publicoGeral set fkIdPessoa where idPublicGeral=?;";
 		PreparedStatement ps1 = Banco.getPreparedStatementWithPk(conn, sql1);
 		PreparedStatement ps2 = Banco.getPreparedStatement(conn, sql2);
-		Pessoa pessoa = new Pessoa();
 		ResultSet rs = null;
 		try {
 			ps1.setString(1, novoPublicoGeral.getNome());
@@ -35,6 +34,14 @@ public class PublicoGeralDAO {
 				int idGerado = rs.getInt(1);
 				novoPublicoGeral.setId(rs.getInt(1));
 			}
+		} catch(SQLException e) {
+			System.out.println("Erro ao cadastrar Pessoa Publico Geral.\nErro: "+e.getMessage());
+		}finally {
+			Banco.closeConnection(conn);
+			Banco.closePreparedStatement(ps1);
+			Banco.closeResultSet(rs);
+		}
+		try {
 			ps2.setInt(1, novoPublicoGeral.getId());
 			ps2.execute();
 			rs = ps2.getGeneratedKeys();
@@ -54,17 +61,34 @@ public class PublicoGeralDAO {
 	}
 	public boolean alterar(PublicoGeral publicoGeralAlterado) {
 		Connection conn = Banco.getConnection();
-		String sql="update publicoGeral set fkIdPessoa=? where idPublicoGeral=?";
-		PreparedStatement ps =Banco.getPreparedStatementWithPk(conn, sql);
-	    Pessoa pessoa = new Pessoa();
+		String sql="update pessoa set nome=?, sobrenome=?, dtNascimento=?, sexo=?, cpf=?, tipoPessoa=?, fkIdAplicacao=? where idPessoa=?;";
+		String sql2="update publicoGeral set fkIdPessoa=?";
+		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
+		PreparedStatement ps2 = Banco.getPreparedStatementWithPk(conn, sql2);
 		boolean resposta = false;
+		Pessoa pessoa = new Pessoa();
 		try {
-			ps.setInt(1, pessoa.getId());
-			ps.setInt(2, publicoGeralAlterado.getId());
-			int numLinhasAlteradas = ps.executeUpdate();
-			resposta = numLinhasAlteradas>0;
+			ps.setString(1, publicoGeralAlterado.getNome());
+			ps.setString(2, publicoGeralAlterado.getSobrenome());
+			ps.setDate(3, java.sql.Date.valueOf(publicoGeralAlterado.getDtNascimento()));
+			ps.setString(4, String.valueOf(publicoGeralAlterado.getSexo()));
+			ps.setString(5, publicoGeralAlterado.getCpf());
+			ps.setString(6, publicoGeralAlterado.getTipoPessoa());
+			ps.setInt(7, publicoGeralAlterado.getAplicacao().getId()); 
+			ps.setInt(8, publicoGeralAlterado.getId());
+			resposta = ps.executeUpdate()>0;
 		} catch(SQLException e) {
-			System.out.println("Erro ao alterar registro de Público Peral.\nErro: "+e.getMessage());
+			System.out.println("Erro ao alterar Pessoa Publico Geral.\nErro: "+e.getMessage());
+	
+		}finally {
+			Banco.closeConnection(conn);
+			Banco.closePreparedStatement(ps);
+		}
+		try{
+			ps2.setInt(1, publicoGeralAlterado.getId());
+			ps2.executeUpdate();
+		} catch(SQLException e) {
+			System.out.println("Erro ao alterar registro de PublicoGeral.\nErro: "+e.getMessage());
 		}finally {
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);

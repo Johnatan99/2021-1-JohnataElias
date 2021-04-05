@@ -11,8 +11,9 @@ public class Vacina {
 	private LocalDate dtInicioPesquisa;
 	private LocalDate dtTerminoPesquisa;
 	private int quantidadeDoses;
+	private int idCriador;
 	
-	public Vacina(String nome, String paisOrigem, String estagioPesquisa, LocalDate dtInicioPesquisa, LocalDate dtTerminoPesquisa, int quantidadeDoses) {
+	public Vacina(String nome, String paisOrigem, String estagioPesquisa, LocalDate dtInicioPesquisa, LocalDate dtTerminoPesquisa, int quantidadeDoses, int idCriador) {
 		super();
 		this.nome = nome;
 		this.paisOrigem = paisOrigem;
@@ -20,6 +21,7 @@ public class Vacina {
 		this.dtInicioPesquisa = dtInicioPesquisa;
 		this.dtTerminoPesquisa = dtTerminoPesquisa;
 		this.quantidadeDoses = quantidadeDoses;
+		this.idCriador = idCriador;
 	}
 	public Vacina() {
 		super();
@@ -72,10 +74,15 @@ public class Vacina {
 	public int getQuantidadeDoses() {
 		return quantidadeDoses;
 	}
-	
+	public int getIdCriador() {
+		return idCriador;
+	}
+	public void setIdCriador(int id) {
+		this.idCriador=idCriador;
+			}
 	@Override
 	public String toString() {
 		return "\n(ID: "+id+", Nome: "+nome+", País de Origem: "+paisOrigem+", Estágio: "+estagioPesquisa
-				+", Data de início: "+dtInicioPesquisa+", Data de término: "+dtTerminoPesquisa+", Doses: " +quantidadeDoses+")";
+				+", Data de início: "+dtInicioPesquisa+", Data de término: "+dtTerminoPesquisa+", Doses: "+quantidadeDoses+", Criador: "+idCriador+")";
 	}	
 }
