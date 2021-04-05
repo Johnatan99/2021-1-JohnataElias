@@ -65,7 +65,7 @@ public class AplicacaoDAO {
 			int numLinhasAlteradas = ps.executeUpdate();
 			resposta = numLinhasAlteradas>0;
 		} catch(SQLException e) {
-			System.out.println("Erro ao excluir registro da aplicação.\nErro: "+e.getMessage());
+			System.out.println("Erro ao excluir registro da Aplicação.\nErro: "+e.getMessage());
 		} finally {
 			Banco.closeConnection(conn);
 			Banco.closePreparedStatement(ps);
@@ -101,7 +101,7 @@ public class AplicacaoDAO {
 			aplicacaoEncontrada.setDtAplicacao(rs.getDate("dtAplicacao").toLocalDate());
 		aplicacaoEncontrada.setNota(rs.getString("nota"));
 		} catch(SQLException e) {
-			System.out.println("Erro ao constuir registro da Aplicação solcitada do resultSet.\nErro: "+e.getMessage());
+			System.out.println("Erro ao constuir registro da Aplicação solcitada do ResultSet.\nErro: "+e.getMessage());
 		}
 		return aplicacaoEncontrada;
 	}

@@ -15,22 +15,39 @@ public class PublicoGeralDAO {
 		
 	public PublicoGeral cadastrar(PublicoGeral novoPublicoGeral) {
 		Connection conn = Banco.getConnection();
-		String sql="insert into publicoGeral(fkIdPessoa) values(?)";
-		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
+		String sql1 = "\"insert into pessoa(nome, sobrenome, dtNascimento, sexo, cpf, tipoPessoa, fkidAplicacao";
+		String sql2="insert into publicoGeral(fkIdPessoa) values(?)";
+		PreparedStatement ps1 = Banco.getPreparedStatementWithPk(conn, sql1);
+		PreparedStatement ps2 = Banco.getPreparedStatement(conn, sql2);
 		Pessoa pessoa = new Pessoa();
 		ResultSet rs = null;
 		try {
-			ps.setInt(1, pessoa.getId());
-			ps.execute();
-			rs = ps.getGeneratedKeys();
+			ps1.setString(1, novoPublicoGeral.getNome());
+			ps1.setString(2,novoPublicoGeral.getSobrenome());
+			ps1.setDate(3, java.sql.Date.valueOf(novoPublicoGeral.getDtNascimento()));
+			ps1.setString(4,String.valueOf(novoPublicoGeral.getSexo()));
+			ps1.setString(5, novoPublicoGeral.getCpf());
+			ps1.setString(6, novoPublicoGeral.getTipoPessoa());
+			ps1.setInt(7, novoPublicoGeral.getAplicacao().getId());
+			ps1.execute();
+			rs = ps1.getGeneratedKeys();
+			if(rs.next()) {	
+				int idGerado = rs.getInt(1);
+				novoPublicoGeral.setId(rs.getInt(1));
+			}
+			ps2.setInt(1, novoPublicoGeral.getId());
+			ps2.execute();
+			rs = ps2.getGeneratedKeys();
 			if(rs.next()) {
 				novoPublicoGeral.setId(rs.getInt(1));
 			}
+			System.out.print(rs.getString(2)+"\n"+rs.getInt(8));
 		} catch(SQLException e) {
 			System.out.println("Erro ao cadastrar novo Público Geral.\nErro: "+e.getMessage());
 		} finally {
 			Banco.closeConnection(conn);
-			Banco.closePreparedStatement(ps);
+			Banco.closePreparedStatement(ps1);
+			Banco.closePreparedStatement(ps2);
 			Banco.closeResultSet(rs);
 		}
 		return novoPublicoGeral;
