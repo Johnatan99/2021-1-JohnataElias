@@ -1,4 +1,4 @@
-package atividade_vacina.model.intity;
+package atividade_vacina.model.entity;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -9,18 +9,16 @@ public class Pessoa {
 	private String nome;
 	private String sobrenome;
 	private LocalDate dtNascimento;
-	private char sexo;
+	private String sexo;
 	private String cpf;
-	private String tipoPessoa;	
 	private Aplicacao aplicacao;
-	public Pessoa(String nome, String sobrenome, LocalDate dtNascimento, char sexo, String cpf,  String tipoPessoa, Aplicacao aplicacao) {
+	public Pessoa(String nome, String sobrenome, LocalDate dtNascimento, String sexo, String cpf, Aplicacao aplicacao) {
 		super();
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.dtNascimento = dtNascimento;
 		this.sexo = sexo;
 		this.cpf = cpf;
-		this.tipoPessoa=tipoPessoa;
 		this.aplicacao = aplicacao;
 	}
 	public Pessoa() {
@@ -54,10 +52,10 @@ public class Pessoa {
 	public void setDtNascimento(LocalDate dtNascimento) {
 		this.dtNascimento = dtNascimento;
 	}
-	public char getSexo() {
+	public String getSexo() {
 		return sexo;
 	}
-	public void setSexo(char sexo) {
+	public void setSexo(String sexo) {
 		this.sexo = sexo;
 	}
 	public String getCpf() {
@@ -66,12 +64,7 @@ public class Pessoa {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	public String getTipoPessoa() {
-		return tipoPessoa;
-	}
-	public void setTipoPessoa(String tipoPessoa) {
-		this.tipoPessoa=tipoPessoa;
-	}
+
 	public Aplicacao getAplicacao() {
 		return aplicacao;
 	}

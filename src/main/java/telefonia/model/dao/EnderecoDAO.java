@@ -20,7 +20,7 @@ public class EnderecoDAO implements BaseDAO<EnderecoVO> {
 	
 	public EnderecoVO cadastrar(EnderecoVO novoEndereco) {
 		Connection conn = Banco.getConnection();
-		String sql = "insert into endereco(logradouro, cep, uf, cidade, numero) values(?, ?, ?, ?, ?)";
+		String sql = "insert into atividade_telefonia.endereco(logradouro, cep, uf, cidade, estado, numero) values(?, ?, ?, ?, ?, ?)";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
 		ResultSet rs = null;
 		try {
@@ -29,6 +29,7 @@ public class EnderecoDAO implements BaseDAO<EnderecoVO> {
 			ps.setString(3, novoEndereco.getUf());
 			ps.setString(4, novoEndereco.getCidade());
 			ps.setString(5, novoEndereco.getNumero());
+			ps.setString(6, novoEndereco.getEstado());
 			ps.execute();
 			rs = ps.getGeneratedKeys();
 			if(rs.next()) {

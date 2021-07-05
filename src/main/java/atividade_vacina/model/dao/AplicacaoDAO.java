@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import atividade_vacina.model.intity.Aplicacao;
-import atividade_vacina.model.intity.Vacina;
+import atividade_vacina.model.entity.Aplicacao;
+import atividade_vacina.model.entity.Vacina;
 
 public class AplicacaoDAO {
 	

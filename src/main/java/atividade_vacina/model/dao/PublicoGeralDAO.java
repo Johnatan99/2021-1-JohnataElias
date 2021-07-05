@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import atividade_vacina.model.dao.PessoaDAO;
-import atividade_vacina.model.intity.Pessoa;
-import atividade_vacina.model.intity.PublicoGeral;
+import atividade_vacina.model.entity.Pessoa;
+import atividade_vacina.model.entity.PublicoGeral;
 
 public class PublicoGeralDAO {
 		

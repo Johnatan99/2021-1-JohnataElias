@@ -6,14 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import atividade_vacina.model.intity.Pesquisador;
-import atividade_vacina.model.intity.Pessoa;
-import atividade_vacina.model.intity.Vacina;
+import atividade_vacina.model.entity.Pesquisador;
+import atividade_vacina.model.entity.Pessoa;
+import atividade_vacina.model.entity.Vacina;
 
 public class PesquisadorDAO implements BaseDAO<Pesquisador>{
 	public Pesquisador cadastrar(Pesquisador novoPesquisador) {
 		Connection conn = Banco.getConnection();
-		String sql="insert into pessoa(nome, sobrenome, dtNascimento, sexo, cpf, tipoPessoa, fkidAplicacao) values(?, ?, ?, ?, ?, ?, ?)";
+		String sql="insert into pessoa(nome, sobrenome, dtNascimento, sexo, cpf, instituicao, fkidAplicacao) values(?, ?, ?, ?, ?, ?, ?)";
 		String sql2="insert into pesquisador(instituicao, fkIdPessoa) values(?, ?, ?)";
 		PreparedStatement ps = Banco.getPreparedStatementWithPk(conn, sql);
 		PreparedStatement ps2 = Banco.getPreparedStatementWithPk(conn, sql2);
@@ -24,8 +24,7 @@ public class PesquisadorDAO implements BaseDAO<Pesquisador>{
 			ps.setDate(3, java.sql.Date.valueOf(novoPesquisador.getDtNascimento()));
 			ps.setString(4, String.valueOf(novoPesquisador.getSexo()));
 			ps.setString(5, novoPesquisador.getCpf());
-			ps.setString(6, novoPesquisador.getTipoPessoa());
-			ps.setInt(7, novoPesquisador.getAplicacao().getId());
+			ps.setInt(6, novoPesquisador.getAplicacao().getId());
 			ps.execute();
 			rs = ps.getGeneratedKeys();
 			if(rs.next()) {
@@ -36,7 +35,7 @@ public class PesquisadorDAO implements BaseDAO<Pesquisador>{
 		}
 		try {
 			ps2.setString(1, novoPesquisador.getInstituicao());
-			ps2.setInt(2, novoPesquisador.getId());
+			ps2.setInt(2, novoPesquisador.getAplicacao().getId());
 			ps2.execute();
 			rs = ps2.getGeneratedKeys();
 			if(rs.next()) {
@@ -67,12 +66,11 @@ public class PesquisadorDAO implements BaseDAO<Pesquisador>{
 			ps.setDate(3, java.sql.Date.valueOf(pesquisadorAlterado.getDtNascimento()));
 			ps.setString(4, String.valueOf(pesquisadorAlterado.getSexo()));
 			ps.setString(5, pesquisadorAlterado.getCpf());
-			ps.setString(6, pesquisadorAlterado.getTipoPessoa());
-			ps.setInt(7, pesquisadorAlterado.getAplicacao().getId()); 
-			ps.setInt(8, pesquisadorAlterado.getId());
+			ps.setInt(6, pesquisadorAlterado.getAplicacao().getId()); 
+			ps.setInt(7, pesquisadorAlterado.getId());
 			
 			ps2.setString(1, pesquisadorAlterado.getInstituicao());
-			ps2.setInt(2, pesquisadorAlterado.getId());
+			ps2.setInt(2, pesquisadorAlterado.getAplicacao().getId());
 			ps2.setInt(3, pesquisadorAlterado.getId());
 			ps.executeUpdate();
 			ps2.executeUpdate();	
@@ -121,10 +119,11 @@ public class PesquisadorDAO implements BaseDAO<Pesquisador>{
 			pesquisadorEncontrado.setNome(rs.getString("nome"));
 			pesquisadorEncontrado.setSobrenome(rs.getString("sobrenome"));
 			pesquisadorEncontrado.setDtNascimento(rs.getDate("dtNascimento").toLocalDate());
-			pesquisadorEncontrado.setSexo(rs.getString("sexo").charAt(0));
+			pesquisadorEncontrado.setSexo(rs.getString("sexo"));
 			pesquisadorEncontrado.setCpf(rs.getString("cpf"));	
 			pesquisadorEncontrado.setId(rs.getInt("idPesquisador"));
-			pesquisadorEncontrado.setInstituicao(rs.getString("instituicao"));			
+			pesquisadorEncontrado.setInstituicao(rs.getString("instituicao"));	
+			pesquisadorEncontrado.getAplicacao().setId(rs.getInt("idVacinaCriada"));
 		} catch(SQLException e) {
 			System.out.println("Erro ao construir registro de Pesquisador do ResultSet.\nErro: "+e.getMessage());
 		}

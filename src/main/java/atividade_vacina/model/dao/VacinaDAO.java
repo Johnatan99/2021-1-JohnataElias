@@ -9,8 +9,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import atividade_vacina.model.intity.Pesquisador;
-import atividade_vacina.model.intity.Vacina;
+import atividade_vacina.model.entity.Pesquisador;
+import atividade_vacina.model.entity.Vacina;
+import atividade_vacina.seletor.VacinaSeletor;
 
 public class VacinaDAO implements BaseDAO<Vacina>{	
 	
@@ -161,4 +162,58 @@ public class VacinaDAO implements BaseDAO<Vacina>{
 		}
 		return vacinaEncontradas;
 	}
+	
+	public ArrayList<Vacina> listarComSeletor(VacinaSeletor seletor){
+		String sql="select*from vacina v";
+		if(seletor.temFiltro()) {
+			sql=seletor.criarFiltros(seletor, sql);
+		}
+		Connection conn = Banco.getConnection();
+		PreparedStatement ps = Banco.getPreparedStatement(conn, sql);	
+		ArrayList<Vacina> resultados = new ArrayList<Vacina>();
+		if(seletor.temPaginacao()) {
+			
+		}
+		try {
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				Vacina v = construirDoResultSet(rs);
+				resultados.add(v);
+			}
+		}catch(SQLException e) {
+			System.out.println("Erroao consultar com filtro.\nErro: "+e.getMessage());
+		}finally {
+			Banco.closeConnection(conn);
+			Banco.closePreparedStatement(ps);
+		}
+		return resultados;
+		
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

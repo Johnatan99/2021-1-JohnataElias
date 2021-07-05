@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import org.apache.poi.util.StringUtil;
 
 import atividade_vacina.model.dao.VacinaDAO;
-import atividade_vacina.model.intity.Vacina;
+import atividade_vacina.model.entity.Vacina;
 
 public class MenuVacina {
 	

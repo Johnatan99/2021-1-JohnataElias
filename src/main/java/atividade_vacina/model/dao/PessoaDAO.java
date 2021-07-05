@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import atividade_vacina.model.dao.PessoaDAO;
-import atividade_vacina.model.intity.Aplicacao;
-import atividade_vacina.model.intity.Pessoa;
-import atividade_vacina.model.intity.Vacina;
+import atividade_vacina.model.entity.Aplicacao;
+import atividade_vacina.model.entity.Pessoa;
+import atividade_vacina.model.entity.Vacina;
 
 public class PessoaDAO implements BaseDAO<Pessoa> {
 	

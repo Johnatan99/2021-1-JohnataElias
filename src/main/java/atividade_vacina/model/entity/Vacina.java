@@ -1,4 +1,4 @@
-package atividade_vacina.model.intity;
+package atividade_vacina.model.entity;
 
 import java.time.LocalDate;
 

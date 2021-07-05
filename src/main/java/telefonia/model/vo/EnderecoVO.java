@@ -8,17 +8,19 @@ public class EnderecoVO {
 	private String uf;
 	private String cidade;
 	private String numero;
+	private String estado;
 	
 	public EnderecoVO() {
 		super();
 	}
-	public EnderecoVO(String logradouro, String cep, String uf, String cidade, String numero) {
+	public EnderecoVO(String logradouro, String cep, String uf, String cidade, String numero, String estado) {
 		super();
 		this.logradouro = logradouro;
 		this.cep = cep;
 		this.uf = uf;
 		this.cidade = cidade;
 		this.numero = numero;
+		this.estado = estado;
 	}
 	
 	public Integer getId() {
@@ -58,12 +60,20 @@ public class EnderecoVO {
 	public void setNumero(String numero) {
 		this.numero = numero;
 	}
+	
+	public String getEstado() {
+		return estado;
+	}
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
 	@Override
 	public String toString() {
 		return "\nLogradouro: "+this.getLogradouro()
 				+ "\nCEP: "+this.getCep()
 				+ "\nUF: "+this.getUf()
 				+ "\nCidade: "+this.getCidade()
+				+ "\nEstado: "+this.getEstado()
 				+ "\n";
 	}
 	

@@ -1,6 +1,6 @@
-drop database if exists telefonia;
-create database telefonia;
-use telefonia;
+drop database if exists atividade_telefonia;
+create database atividade_telefonia;
+use atividade_telefonia;
 
 create table endereco(
 	idEndereco Integer not null auto_increment primary key,
@@ -8,6 +8,7 @@ create table endereco(
 	cep varchar(9) not null,
 	uf varchar(2) not null,
 	cidade varchar(100),
+    estado varchar(100),
 	numero varchar(5)
 );
 create table telefone(
